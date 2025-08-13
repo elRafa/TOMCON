@@ -1,0 +1,57 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Deploy to Server",
+            "type": "shell",
+            "command": "./deploy.sh",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Deploy the TomCon website to the web server via SSH"
+        },
+        {
+            "label": "Test SSH Connection",
+            "type": "shell",
+            "command": "ssh",
+            "args": [
+                "-o", "ConnectTimeout=10",
+                "${input:serverUser}@${input:serverHost}",
+                "echo 'SSH connection successful!'"
+            ],
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "new"
+            },
+            "problemMatcher": [],
+            "detail": "Test SSH connection to the server"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "serverHost",
+            "description": "Server hostname or IP address",
+            "default": "your-server.com",
+            "type": "promptString"
+        },
+        {
+            "id": "serverUser",
+            "description": "SSH username",
+            "default": "username",
+            "type": "promptString"
+        }
+    ]
+}
