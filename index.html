@@ -28,16 +28,33 @@
     <meta name="twitter:image" content="https://tomconvention.com/images/tomcon-emblem.png">
     <meta name="twitter:image:alt" content="TOM Convention 2025 Official Emblem">
     
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="style.css">
+    <!-- Local Tailwind CSS -->
+    <link href="output.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/icons/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="TOMCON" />
+    <link rel="manifest" href="/icons/site.webmanifest" />
+    
+    <!-- Custom Styles -->
+    <link href="style.css?v=26" rel="stylesheet">
+
+    <!-- Fonts and Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?display=swap&family=Hahmlet:ital,wght@0,600;0,900;1,600;1,900&family=Instrument+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Pacifico:ital,wght@0,400;1,400&family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="https://checkout.tomconvention.com/widget/v2.css" crossorigin>
-<script type="text/javascript" src="https://checkout.tomconvention.com/widget/v2.en.js" async crossorigin></script>
     
-    <!-- Event Structured Data (JSON-LD) -->
+    <!-- Netlify Identity -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+    <!-- Pretix Widget -->
+    <link rel="stylesheet" type="text/css" href="https://checkout.tomconvention.com/widget/v2.css" crossorigin>
+    <script type="text/javascript" src="https://checkout.tomconvention.com/widget/v2.en.js" async crossorigin></script>
+
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -189,7 +206,7 @@
                 "name": "Where is TOM Convention held?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "TOM Convention is held at the Crowne Plaza Costa Mesa, Promenade Ballroom, located at 3131 Bristol Street, Costa Mesa, CA 92626."
+                    "text": "TOM Convention is held at the Crowne Plaza Costa Mesa Orange County, Promenade Ballroom, located at 3131 Bristol Street, Costa Mesa, CA 92626."
                 }
             },
             {
@@ -197,7 +214,7 @@
                 "name": "Who's performing at TOM Convention?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Featured guests include Aaron Sprinkle (Poor Old Lu), Allan Aguirre (Scaterd Few), Derri Daugherty (The Choir), Eric Campuzano (The Prayer Chain), Crystal Lewis, Jim Chaffin (The Crucified), and many more legendary Christian alternative rock artists."
+                    "text": "Featured guests include Aaron Sprinkle (Poor Old Lu), Allan Aguirre (Scaterd Few), Derri Daugherty (The Choir), Eric Campuzano (The Prayer Chain), Crystal Lewis, Jim Chaffin (The Crucified), and many more legendary Christian alternative rock and hard music artists."
                 }
             },
             {
@@ -226,7 +243,7 @@
         <span id="countdown" class="font-mono text-base bg-gray-900/50 text-[#E3D6B8] px-4 py-1 rounded-lg"></span>
     </header>
 
-    <div class="container mx-auto px-6 pt-[15px] pb-8 md:pb-12 max-w-4xl text-center">
+    <div class="container mx-auto px-6 pt-[15px] pb-6 md:pb-10 max-w-4xl text-center">
 
         <div class="flex flex-col items-center mb-4 mt-0">
             <span class="block text-[#E3D6B8] bg-[#482124] font-['Hahmlet',serif] text-lg sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-3xl font-semibold tracking-[0.3em] uppercase py-4 w-full max-w-[90vw] xl:max-w-full 2xl:max-w-full sm:w-[90%] text-center lg:whitespace-nowrap break-words" style="font-family: 'Hahmlet', serif;">&nbsp;MIKEE&nbsp;BRIDGES PRESENTS</span>
@@ -234,8 +251,8 @@
         <img src="images/tomcon-emblem.png" alt="TomCon 2025 Emblem" class="mx-auto mb-8 w-[90%] max-w-4xl" />
 
         <header class="mb-12 md:mb-16">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mt-2 break-words hyphens-auto">
-                Tom Convention 2025
+            <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-10xl font-bold mt-2 break-words hyphens-auto">
+                TOM Convention 2025
                 </h1>
             <p class="text-xl md:text-2xl font-light tracking-wider mt-2">Costa Mesa, California</p>
         </header>
@@ -251,7 +268,7 @@
                 <div class="grid md:grid-cols-2 gap-6">
                     <ul class="space-y-2 text-left">
                         <li>• <strong>2 full days</strong> of programming</li>
-                        <li>• <strong>12 Panel discussions</strong> with 54 legendary artists + 6 awesome moderators from your favorite bands and insiders</li>
+                        <li>• <strong>12 Panel discussions</strong> with 54 legendary artists + 6 awesome moderators from our community</li>
                         <li>• <strong>Interactive</strong> audience Q&amp;A sessions</li>
                         <li>• <strong>Autograph &amp; photo</strong> opportunities</li>
                     </ul>
@@ -273,7 +290,7 @@
     <!-- Event Details Section - Full Width -->
     <section id="event-details" class="mb-12 md:mb-20">
         <div class="container mx-auto px-6 max-w-4xl text-center mb-6">
-            <h2 class="text-3xl md:text-4xl text-white">Event Details</h2>
+            <h2 class="text-4xl md:text-6xl lg:text-8xl text-white break-words" style="font-family: 'Pacifico', cursive;">Event Details</h2>
         </div>
         <div class="bg-gray-900/50 py-8 w-full ring-1 ring-white/10">
             <div class="container mx-auto px-6 max-w-4xl">
@@ -286,7 +303,7 @@
                             <li><strong>Panels:</strong> Twelve 75-minute discussion &amp; interview panels (6 per day), with 15 minute breaks between each panel. Be ready for intrigue, laughter, tears, and nostalgia galore 🥲</li>
                         </ul>
                         <ul class="space-y-3 text-base md:text-lg">
-                            <li><strong>Stay at the hotel:</strong> Consider booking at least 3 nights (Friday, Saturday, and Sunday) to ensure you don't miss any of the action.</li>
+                            <li><strong>Stay at the hotel:</strong> A number of us will be hanging out at the restaurant on Thursday night, so consider booking at least 3 nights (Thursday, Friday & Saturday) to ensure you don't miss any of the action.</li>
                             <li><strong>Book your room early:</strong> The Crowne Plaza Costa Mesa has discounted hotel rooms available! Just mention TOMCON when booking.</li>
                         </ul>
                     </div>
@@ -300,43 +317,47 @@
     <!-- VIP Passes Section - Full Width -->
     <section id="vip-passes" class="mb-12 md:mb-20">
         <div class="container mx-auto px-6 max-w-4xl text-center mb-6">
-            <h2 id="vip-passes" class="text-3xl md:text-4xl text-white">VIP Passes / Tickets</h2>
+            <h2 id="vip-passes" class="text-4xl md:text-6xl lg:text-8xl text-white break-words" style="font-family: 'Pacifico', cursive;">VIP Passes / Tickets</h2>
         </div>
         <div class="bg-[#E3D6B8] py-8 w-full">
             <div class="container mx-auto px-6 max-w-4xl text-center">
-                <p class="text-base md:text-lg text-[#482124] font-bold">Every ticket is a VIP pass.</p> <p class="text-base md:text-lg text-[#482124]">To keep this event intimate, only 250 tickets will be available. Get one quick! <br>If you have a group of 10 or more, please contact us.</p>
-                <p class="text-base md:text-lg text-[#482124] font-bold">Thank you from our all volunteer staff for making this labor-of-love event possible.</p>
-                <button id="ticket-toggle" class="bg-[#482124] text-[#E3D6B8] px-6 py-3 rounded-lg hover:bg-[#3a1b1e] transition-colors mb-4" style="font-family: 'Pacifico', cursive;">Display ticket info</button>
-                <pretix-widget style="color: #482124;" event="https://checkout.tomconvention.com/"></pretix-widget>
-<noscript>
-   <div class="pretix-widget">
-        <div class="pretix-widget-info-message">
-                            JavaScript is disabled in your browser. To access our ticket shop without JavaScript, please <a target="_blank" rel="noopener" href="https://checkout.tomconvention.com/">click here</a>.
+                <p class="text-base md:text-lg text-[#482124] font-bold">Every ticket is a VIP pass.</p> <p class="text-base md:text-lg text-[#482124]">To keep this event intimate, only 250 tickets will be available. Get one quick! <br>If you have a group of 9 or more, please contact us for group pricing.</p>
+                <p class="text-base md:text-lg text-[#482124] font-bold">Thank you from our all-volunteer staff for making this labor-of-love event possible.</p>
+                <button id="ticket-toggle" class="mt-4 px-6 py-3 bg-[#482124] text-[#E3D6B8] rounded-lg hover:bg-opacity-80 transition-colors text-2xl" style="font-family: 'Pacifico', cursive;">
+                    Display ticket info
+                </button>
+                <div id="ticket-widget" class="mt-4 hidden">
+                    <pretix-widget style="color: #482124;" event="https://checkout.tomconvention.com/"></pretix-widget>
+                    <noscript>
+                       <div class="pretix-widget">
+                            <div class="pretix-widget-info-message">
+                                            JavaScript is disabled in your browser. To access our ticket shop without JavaScript, please <a target="_blank" rel="noopener" href="https://checkout.tomconvention.com/">click here</a>.
+                                </div>
+                        </div>
+                    </noscript>
                 </div>
-    </div>
-</noscript>
             </div>
         </div>
     </section>
 
-    <div class="container mx-auto px-6 pt-0 pb-12 md:pb-20 max-w-4xl text-center">
+    <div class="container mx-auto px-6 pt-0 pb-8 md:pb-12 max-w-4xl text-center">
 
         <section id="moderators" class="mb-12 md:mb-20">
-            <h2 class="text-3xl md:text-4xl mb-10">Guest Panel Moderators</h2>
-            <p class="text-lg text-[#E3D6B8] mb-6">Click or tap on a moderator's photo to flip their card and ask them a question.</p>
+            <h2 class="text-4xl md:text-6xl lg:text-8xl mb-10 break-words" style="font-family: 'Pacifico', cursive;">Guest Panel Moderators</h2>
+            <p class="text-lg text-[#E3D6B8] mb-6">Tap on a moderator's photo to flip their card and ask them a question.</p>
             <div id="moderator-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
             </div>
         </section>
 
         <section id="performers" class="mb-12 md:mb-20">
-            <h2 class="text-3xl md:text-4xl mb-10">Live Music Performances</h2>
-            <p class="text-lg text-[#E3D6B8] mb-6">Click or tap on a performer's photo to flip their card and request a song. <br> No guarantees, but we'll do our best!</p>
+            <h2 class="text-4xl md:text-6xl lg:text-8xl mb-10 break-words" style="font-family: 'Pacifico', cursive;">Live Music Performances</h2>
+            <p class="text-lg text-[#E3D6B8] mb-6">Tap on a performer's photo to flip their card and request a song or ask them a question. <br> <em>No guarantees, but we'll do our best!</em></p>
             <div id="performer-grid" class="space-y-8">
             </div>
         </section>
 
         <section id="record-labels" class="mb-12 md:mb-20">
-            <h2 class="text-3xl md:text-4xl mb-6">Record Labels Represented</h2>
+            <h2 class="text-4xl md:text-6xl lg:text-8xl mb-6 break-words" style="font-family: 'Pacifico', cursive;">Record Labels Represented</h2>
             <div class="bg-gray-900/20 p-6 rounded-lg ring-1 ring-white/10 mb-6">
                 <h3 class="text-lg font-semibold mb-4 text-[#E3D6B8]">🏷️ Historic Christian Alternative Rock Labels at TOMCON:</h3>
                 <div class="grid md:grid-cols-2 gap-4 text-left">
@@ -357,7 +378,7 @@
         </section>
 
         <section id="featured-guests" class="mb-12 md:mb-20">
-            <h2 class="text-3xl md:text-4xl mb-10">Featured Guest Panelists</h2>
+            <h2 class="text-4xl md:text-6xl lg:text-8xl mb-10 break-words" style="font-family: 'Pacifico', cursive;">Featured Guest Panelists</h2>
             <p class="text-lg text-[#E3D6B8] mb-6">Click or tap on a panelist's photo to flip their card and ask them a question to be answered in the panel discussion at the event.</p>
             <div id="guest-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
             </div>
@@ -366,7 +387,7 @@
 
         
         <section id="staff" class="mb-12 md:mb-20">
-            <h2 class="text-3xl md:text-4xl mb-10">TomCon Staff</h2>
+            <h2 class="text-4xl md:text-6xl lg:text-8xl mb-10 break-words" style="font-family: 'Pacifico', cursive;">TomCon Staff</h2>
             <div id="staff-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
             </div>
         </section>
@@ -374,7 +395,7 @@
         <!-- About Christian Alternative Rock Section -->
         <section id="about-christian-alternative-rock" class="mb-12 md:mb-20">
             <div class="container mx-auto px-6 max-w-4xl text-center mb-6">
-                <h2 class="text-3xl md:text-4xl text-white">About Christian Alternative Rock</h2>
+                <h2 class="text-4xl md:text-6xl lg:text-8xl text-white break-words" style="font-family: 'Pacifico', cursive;">About Christian Alternative Rock</h2>
             </div>
             <div class="bg-gray-800/50 py-8 w-full ring-1 ring-white/10">
                 <div class="container mx-auto px-6 max-w-4xl">
@@ -403,7 +424,7 @@
             </div>
         </section>
         
-        <section id="note" class="mb-12 md:mb-20 max-w-3xl mx-auto text-[#E3D6B8] italic">
+        <section id="note" class="max-w-3xl mx-auto text-[#E3D6B8] italic">
             <p>"All of us folks that will be attending this event run the spectrum of culture, religion and politics. We welcome all, however, this event is specifically focused on the stories, connections and history of our little musical corner."</p>
             <p class="mt-4">-Mikee</p>
         </section>
@@ -438,6 +459,6 @@
         </div>
     </footer>
 
-    <script type="module" src="script.js?v=26"></script>
+    <script type="module" src="script.js?v=26" defer></script>
 </body>
 </html>

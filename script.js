@@ -9,13 +9,18 @@ let currentFlippedCard = null;
 document.addEventListener('DOMContentLoaded', () => {
     // Ticket toggle functionality
     const ticketToggle = document.getElementById('ticket-toggle');
-    const pretixWidget = document.querySelector('pretix-widget');
+    const ticketWidget = document.getElementById('ticket-widget');
     
-    if (ticketToggle && pretixWidget) {
+    if (ticketToggle && ticketWidget) {
         ticketToggle.addEventListener('click', () => {
-            const isVisible = pretixWidget.style.display !== 'none';
-            pretixWidget.style.display = isVisible ? 'none' : 'block';
-            ticketToggle.textContent = isVisible ? 'Display ticket info' : 'Hide ticket info';
+            const isHidden = ticketWidget.classList.contains('hidden');
+            if (isHidden) {
+                ticketWidget.classList.remove('hidden');
+                ticketToggle.textContent = 'Hide ticket info';
+            } else {
+                ticketWidget.classList.add('hidden');
+                ticketToggle.textContent = 'Display ticket info';
+            }
         });
     }
 

@@ -114,7 +114,7 @@ export const guests = [
     },
     {
         name: "Doug Van Pelt",
-        projects: "HM Magazine, Lust Control",
+        projects: "HM Magazine, Heaven's Metal Magazine, Lust Control",
         role: "moderator",
         imageUrl: "images/doug-van-pelt.jpg",
         visibility: 1
@@ -128,7 +128,7 @@ export const guests = [
     },
     {
         name: "Eddie Harbour",
-        projects: "TOMCON Staff",
+        projects: "TOMCON Staff, Coordinator Supreme",
         imageUrl: "images/eddie-harbour.jpg",
         role: "moderator, staff",
         order: 2,
@@ -484,6 +484,6 @@ export const guests = [
         imageUrl: "images/jon-sylvester.jpg",
         role: "staff",
         order: 5,
-        visibility: 1
+        visibility: 0
     }
 ];
