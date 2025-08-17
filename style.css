@@ -170,6 +170,9 @@ header h2 {
 
 section h2 {
     font-family: 'Pacifico', cursive;
+    font-weight: normal;
+    line-height: 1.25 !important;
+    opacity: 0.69;
 }
 
 /* Success modal button styling */

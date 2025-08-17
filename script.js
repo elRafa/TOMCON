@@ -1,9 +1,24 @@
 import { guests } from './guests.js';
 
+// DEBUG MODE: Set to true to disable lazy loading and see placeholders
+const DEBUG_MODE = false;
+
 // Global variables for card state management
 let currentFlippedCard = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Ticket toggle functionality
+    const ticketToggle = document.getElementById('ticket-toggle');
+    const pretixWidget = document.querySelector('pretix-widget');
+    
+    if (ticketToggle && pretixWidget) {
+        ticketToggle.addEventListener('click', () => {
+            const isVisible = pretixWidget.style.display !== 'none';
+            pretixWidget.style.display = isVisible ? 'none' : 'block';
+            ticketToggle.textContent = isVisible ? 'Display ticket info' : 'Hide ticket info';
+        });
+    }
+
     const guestGrid = document.getElementById('guest-grid');
     const moderatorGrid = document.getElementById('moderator-grid');
     const performerGrid = document.getElementById('performer-grid');
@@ -45,16 +60,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (enableLazyLoading) {
                     // Get first name for loading text, with special case for Us Kids All-Stars
                     const firstName = guest.name === 'Us Kids All-Stars' ? 'Us Kids All-Stars' : guest.name.split(' ')[0];
-                    // Create placeholder initially
-                    imageHtml = `<div class="w-full rounded-md shadow-lg mb-4 bg-gray-900 flex items-center justify-center lazy-image-placeholder" style="aspect-ratio: 2 / 3;" data-src="${guest.imageUrl}" data-alt="${guest.name}">
-                        <span class="text-gray-500">Loading ${firstName}...</span>
+                    // Create placeholder with container-based rounded corners
+                    imageHtml = `<div class="w-full mb-4" style="border-radius: 1em 1em 0 0; overflow: hidden;">
+                        <div class="w-full bg-gray-900 flex items-center justify-center lazy-image-placeholder" style="aspect-ratio: 2 / 3; ${DEBUG_MODE ? 'border: 3px solid red;' : ''}" data-src="${guest.imageUrl}" data-alt="${guest.name}">
+                            <span class="text-gray-500">Loading ${firstName}...${DEBUG_MODE ? ' (DEBUG MODE)' : ''}</span>
+                        </div>
                     </div>`;
                 } else {
                     // Load image immediately for moderators
-                imageHtml = `<img src="${guest.imageUrl}" alt="${guest.name}" class="w-full rounded-md shadow-lg mb-4">`;
+                imageHtml = `<img src="${guest.imageUrl}" alt="${guest.name}" class="w-full shadow-lg mb-4">`;
                 }
             } else {
-                 imageHtml = `<div class="w-full rounded-md shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
+                 imageHtml = `<div class="w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
                     <span class="text-gray-500">Image Coming Soon</span>
                  </div>`;
             }
@@ -207,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to load lazy images with minimum display time
     function loadLazyImages() {
-        if (!lazyLoadingEnabled) return;
+        if (!lazyLoadingEnabled || DEBUG_MODE) return;
         
         const placeholders = document.querySelectorAll('.lazy-image-placeholder');
         placeholders.forEach(placeholder => {
@@ -231,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             const newImg = document.createElement('img');
                             newImg.src = src;
                             newImg.alt = alt;
-                            newImg.className = 'w-full rounded-md shadow-lg mb-4';
+                            newImg.className = 'w-full shadow-lg mb-4';
                             placeholder.parentNode.replaceChild(newImg, placeholder);
                             imagesLoaded.add(src);
                         }, minDisplayTime - elapsed);
@@ -240,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const newImg = document.createElement('img');
                         newImg.src = src;
                         newImg.alt = alt;
-                        newImg.className = 'w-full rounded-md shadow-lg mb-4';
+                        newImg.className = 'w-full shadow-lg mb-4';
                         placeholder.parentNode.replaceChild(newImg, placeholder);
                         imagesLoaded.add(src);
                     }
@@ -252,17 +269,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (elapsed < minDisplayTime) {
                         setTimeout(() => {
-                            placeholder.innerHTML = `<div class="w-full rounded-md shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
+                            placeholder.innerHTML = `<div class="w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
                                 <span class="text-gray-500">Image Error</span>
                             </div>`;
-                            placeholder.className = 'w-full rounded-md shadow-lg mb-4 bg-gray-900 flex items-center justify-center';
+                            placeholder.className = 'w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center';
                             imagesLoaded.add(src);
                         }, minDisplayTime - elapsed);
                     } else {
-                        placeholder.innerHTML = `<div class="w-full rounded-md shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
+                        placeholder.innerHTML = `<div class="w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
                             <span class="text-gray-500">Image Error</span>
                         </div>`;
-                        placeholder.className = 'w-full rounded-md shadow-lg mb-4 bg-gray-900 flex items-center justify-center';
+                        placeholder.className = 'w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center';
                         imagesLoaded.add(src);
                     }
                 };
@@ -1003,13 +1020,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: 'GET',
                     mode: 'no-cors'
                 }).then(() => {
-                    console.log('Delete request sent to Google Sheet for:', questionId);
-                }).catch(error => {
-                    console.error('Error deleting from sheet:', error);
+                    if (DEBUG_MODE) console.log('Delete request sent to Google Sheet for:', questionId);
+                                  }).catch(error => {
+                      if (DEBUG_MODE) console.error('Error deleting from sheet:', error);
                 });
                 
             } catch (error) {
-                console.error('Error calling delete endpoint:', error);
+                if (DEBUG_MODE) console.error('Error calling delete endpoint:', error);
             }
         }
     }
