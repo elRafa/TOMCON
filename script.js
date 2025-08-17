@@ -73,7 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>`;
                 } else {
                     // Load image immediately for moderators
-                imageHtml = `<img src="${guest.imageUrl}" alt="${guest.name}" class="w-full shadow-lg mb-4">`;
+                imageHtml = `<picture>
+            <source srcset="${guest.imageUrl.replace(/\.(jpg|jpeg|png)$/i, '.webp')}" type="image/webp">
+            <img src="${guest.imageUrl}" alt="${guest.name}" class="w-full shadow-lg mb-4">
+        </picture>`;
                 }
             } else {
                  imageHtml = `<div class="w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
