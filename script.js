@@ -1,5 +1,5 @@
 import { guests } from './guests.js';
-import { createIcons, Facebook, Instagram } from './node_modules/lucide/dist/esm/lucide.js';
+import { createIcons, Facebook, Instagram } from 'https://esm.sh/lucide';
 
 // DEBUG MODE: Set to true to disable lazy loading and see placeholders
 const DEBUG_MODE = false;
