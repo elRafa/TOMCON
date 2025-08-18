@@ -9,8 +9,8 @@ SERVER_USER="u780736690"                  # Replace with your SSH username
 SERVER_PORT="65002"                        # Replace with your SSH port if different
 REMOTE_PATH="/home/u780736690/domains/tomconvention.com/public_html"             # Replace with your remote directory path
 
-# Local project path (current directory)
-LOCAL_PATH="."
+# Local project path (built files)
+LOCAL_PATH="./dist"
 
 # Files and directories to exclude from deployment
 EXCLUDE_PATTERNS=(
