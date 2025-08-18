@@ -1097,6 +1097,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Initialize Lucide icons (must be outside any conditional blocks)
+    createIcons({
+        icons: {
+            Facebook,
+            Instagram
+        }
+    });
+
     // Countdown timer for sticky header
     const countdownEl = document.getElementById('countdown');
     if (countdownEl) {
@@ -1116,14 +1124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateCountdown();
         setInterval(updateCountdown, 1000);
-    
-            // Initialize Lucide icons
-    createIcons({
-        icons: {
-            Facebook,
-            Instagram
-        }
-    });
     }
 });
 
