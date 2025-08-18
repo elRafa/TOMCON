@@ -1,5 +1,5 @@
 import { guests } from './guests.js';
-import { createIcons, Facebook, Instagram } from './vendor/lucide.js';
+import { createIcons, Facebook, Instagram } from 'lucide';
 
 // DEBUG MODE: Set to true to disable lazy loading and see placeholders
 const DEBUG_MODE = false;
@@ -1096,8 +1096,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
-    lucide.createIcons();
 
     // Countdown timer for sticky header
     const countdownEl = document.getElementById('countdown');

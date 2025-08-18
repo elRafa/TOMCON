@@ -4,7 +4,9 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "build": "tailwindcss -i ./input.css -o ./output.css",
+    "dev": "vite",
+    "build": "vite build && tailwindcss -i ./input.css -o ./dist/output.css",
+    "preview": "vite preview",
     "optimize-images": "node optimize-images.js",
     "update-webp": "node update-html-for-webp.js && node update-guests-for-webp.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,7 +26,8 @@
   "devDependencies": {
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.10"
+    "tailwindcss": "^3.4.10",
+    "vite": "^7.1.2"
   },
   "dependencies": {
     "lucide": "^0.539.0",

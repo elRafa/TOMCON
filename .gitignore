@@ -10,6 +10,9 @@
 ehthumbs.db
 Thumbs.db
 
+# Build outputs
+dist/
+
 # Node modules (if not needed in deployment)
 node_modules/
 
