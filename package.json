@@ -4,7 +4,7 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "build": "tailwindcss -i ./input.css -o ./output.css --watch",
+    "build": "tailwindcss -i ./input.css -o ./output.css",
     "optimize-images": "node optimize-images.js",
     "update-webp": "node update-html-for-webp.js && node update-guests-for-webp.js",
     "test": "echo \"Error: no test specified\" && exit 1"

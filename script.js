@@ -1,4 +1,5 @@
 import { guests } from './guests.js';
+import { createIcons, Facebook, Instagram } from './node_modules/lucide/dist/esm/lucide.js';
 
 // DEBUG MODE: Set to true to disable lazy loading and see placeholders
 const DEBUG_MODE = false;
@@ -1118,16 +1119,22 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCountdown();
         setInterval(updateCountdown, 1000);
     
-        // Initialize Lucide icons
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
+            // Initialize Lucide icons
+    createIcons({
+        icons: {
+            Facebook,
+            Instagram
         }
+    });
     }
 });
 
 // Function to refresh Lucide icons after dynamic content changes
 function refreshLucideIcons() {
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
+    createIcons({
+        icons: {
+            Facebook,
+            Instagram
+        }
+    });
 }
