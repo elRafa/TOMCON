@@ -914,7 +914,7 @@ body > .card-container.flipped-reverse .card-flipper {
 
 /* Pretix alert styling with TomCon background */
 .pretix-widget-info-message {
-    background-image: url('images/tomcon-alert.png') !important;
+    background-image: url('tomcon-alert.png') !important;
     background-size: cover !important;
     background-position: left !important;
     background-repeat: no-repeat !important;

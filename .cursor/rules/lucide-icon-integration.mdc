@@ -1,0 +1,47 @@
+---
+description: Lucide icon library integration and tree-shaking best practices
+globs: *.js,*.html
+---
+
+# Lucide Icon Integration Rules
+
+## Proper Initialization
+- **Critical**: Place `createIcons()` call outside any conditional blocks
+- **Location**: Top-level in DOMContentLoaded event listener in [script.js](mdc:script.js)
+- **Import**: Use tree-shaking with `import { createIcons, Facebook, Instagram } from 'lucide'`
+
+## Common Mistake to Avoid
+❌ **Wrong**: Icons inside countdown conditional
+```javascript
+if (countdownEl) {
+    // countdown logic...
+    createIcons({ icons: { Facebook, Instagram } }); // ← Only runs if countdown exists!
+}
+```
+
+✅ **Correct**: Icons at top level
+```javascript
+// Initialize Lucide icons (must be outside any conditional blocks)
+createIcons({
+    icons: {
+        Facebook,
+        Instagram
+    }
+});
+
+// Then handle countdown separately
+if (countdownEl) {
+    // countdown logic only
+}
+```
+
+## Deployment Strategy
+- **Avoid CDN imports** for production (causes module resolution issues)
+- **Use Vite tree-shaking** instead of vendoring entire icon libraries
+- **Single import point**: Main script handles all icon initialization
+- **No separate JS files**: Legal pages should reference main script, not create their own
+
+## HTML Structure
+- Use `data-lucide="icon-name"` attributes in HTML
+- Ensure `<i>` elements are present in DOM before calling `createIcons()`
+- Icons work through DOM scanning, so HTML structure must be correct

@@ -1,0 +1,26 @@
+---
+description: Vite build optimization and asset management best practices
+globs: vite.config.js,package.json,*.html
+---
+
+# Vite Build Optimization Rules
+
+## Asset Management
+- Use `publicDir` in [vite.config.js](mdc:vite.config.js) to ensure assets are copied to dist/
+- For multi-page applications, configure `rollupOptions.input` with all HTML entry points
+- Always check that WebP images and other assets are properly deployed by verifying paths match Vite's serving structure
+
+## Script Loading Efficiency  
+- **Never create separate JS files for simple icon initialization**
+- Move shared functionality like `createIcons()` calls to main script files
+- Avoid conditional blocks that prevent essential initialization on certain pages
+- Use tree-shaking through proper ES module imports instead of vendoring entire libraries
+
+## Build Verification
+- After Vite builds, verify that legal pages don't generate unnecessary separate JS files
+- Check that asset references in built HTML match actual asset filenames
+- Ensure `publicDir` assets are accessible at root paths (e.g., `/webp/image.webp` not `/images/webp/image.webp`)
+
+## Example Issue
+❌ **Bad**: `createIcons()` inside conditional block that only runs on pages with countdown
+✅ **Good**: `createIcons()` at top level of DOMContentLoaded to run on all pages

@@ -1,0 +1,36 @@
+---
+description: Performance optimization and efficient code patterns
+globs: *.js,package.json,vite.config.js
+---
+
+# Performance Optimization Patterns
+
+## Bundle Size Optimization
+- **Eliminate duplicate JS files** - one main script should handle shared functionality
+- **Use tree-shaking** with proper ES module imports instead of importing entire libraries
+- **Avoid separate files** for simple tasks like icon initialization (121-byte files are wasteful)
+- **Leverage Vite's code splitting** appropriately for genuine performance gains
+
+## Image Optimization Strategy
+- **Implement WebP conversion** using [optimize-images.js](mdc:optimize-images.js) 
+- **Use `<picture>` elements** with WebP and fallback formats
+- **Serve images from public directory** structure that Vite understands
+- **Lazy load images** where appropriate, but don't over-engineer placeholder styling
+
+## Script Loading Patterns
+- **Centralize common functionality** in main script files
+- **Use `type="module"` with `defer`** for proper loading order
+- **Avoid CDN dependencies** in production when local bundling is more reliable
+- **Initialize shared resources** (like icons) once in main script, not per-page
+
+## Architecture Decisions
+- **Question inefficient patterns** - why does every page need its own JS file?
+- **Consolidate when possible** - shared functionality belongs in shared files
+- **Optimize for maintainability** - fewer files with clear responsibilities
+- **Measure impact** - eliminate wasteful resource loading
+
+## Build System Integration
+- **Configure Vite properly** for multi-page applications
+- **Use `publicDir` correctly** to serve static assets
+- **Verify build output** makes sense from a performance perspective
+- **Update TODO items** to track optimization opportunities like image pipeline integration

@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://tomconvention.com/sitemap.xml
+
+# Block common development/build artifacts
+Disallow: /node_modules/
+Disallow: /dist/
+Disallow: /.git/
+Disallow: /.cursor/
+Disallow: /.vscode/
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /vite.config.js
+Disallow: /tailwind.config.js
+Disallow: /input.css
+Disallow: /optimize-images.js
+Disallow: /deploy.sh
+Disallow: /.gitignore
+Disallow: /.DS_Store

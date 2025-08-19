@@ -1,0 +1,61 @@
+---
+alwaysApply: true
+---
+
+# Test Before Deploy Rule
+
+## ⚠️ CRITICAL: Never Deploy or Commit Without Local Testing
+
+### Pre-Deployment Checklist
+1. **Test locally FIRST** using Vite dev server (`npm run dev`)
+2. **Build and verify** the dist/ output (`npm run build`)
+3. **Check all pages** - main page AND legal pages (privacy, terms, refunds)
+4. **Verify assets load** - images, icons, styles, JavaScript functionality
+5. **Test interactive elements** - buttons, toggles, forms, navigation
+
+### Testing Commands (Run in Order)
+```bash
+# 1. Start local development server
+npm run dev
+
+# 2. Test in browser at http://localhost:8000
+# - Check main page functionality
+# - Navigate to privacy.html, terms.html, refunds.html
+# - Verify social media icons appear
+# - Test ticket toggle button
+# - Check background colors match brand (#482124)
+
+# 3. Build for production
+npm run build
+
+# 4. Only AFTER local testing passes:
+./deploy.sh
+git add .
+git commit -m "descriptive message"
+git push origin main
+```
+
+### What to Test Locally
+- ✅ **Main page**: All features work, images load, countdown displays
+- ✅ **Legal pages**: Proper background color, social media icons visible
+- ✅ **Interactive elements**: Ticket toggle, card flips, question forms
+- ✅ **Assets**: WebP images load with fallbacks, favicons appear
+- ✅ **Console**: No JavaScript errors in browser dev tools
+
+### Common Issues to Catch Locally
+- Missing social media icons (Facebook, Instagram)
+- Wrong background colors (gray instead of brand brown #482124)
+- 404 errors for images or assets
+- JavaScript errors preventing functionality
+- Broken responsive layouts on mobile
+
+### Emergency Stop Signs
+🛑 **STOP and test locally if you see:**
+- Console errors in browser dev tools
+- Missing icons or broken styling
+- Asset 404 errors in network tab
+- Any visual differences from expected design
+- Functionality not working as expected
+
+### Remember
+**Local testing catches 90% of issues before they reach production. Always test locally first - it saves time and prevents broken deployments.**

@@ -4,7 +4,7 @@ const path = require('path');
 
 // Configuration
 const INPUT_DIR = './images';
-const OUTPUT_DIR = './images/webp';
+const OUTPUT_DIR = './images';
 const QUALITY = 85; // WebP quality (0-100)
 const SUPPORTED_FORMATS = ['.jpg', '.jpeg', '.png'];
 

@@ -1,0 +1,35 @@
+---
+alwaysApply: true
+---
+
+# Systematic Debugging Methodology
+
+## Investigation Process
+1. **Don't assume anything** - verify current state with tools
+2. **Read the actual error messages** and browser console output
+3. **Find root causes** rather than patching symptoms
+4. **Be thorough** - gather complete information before making changes
+
+## File Reading Strategy  
+- **Use parallel tool calls** for maximum efficiency when gathering information
+- **Start with semantic search** for broad understanding, then narrow down
+- **Check multiple file types** (HTML, CSS, JS) when investigating styling issues
+- **Verify built output** in dist/ folder, not just source files
+
+## Change Implementation
+- **Ask before deploying** unless explicitly told to proceed
+- **Test locally first** using Vite dev server or localhost
+- **Verify changes work** on both development and production environments
+- **Commit with descriptive messages** explaining the root cause and solution
+
+## Problem-Solving Priorities
+1. **Identify the real problem** (not just symptoms)
+2. **Find the most efficient solution** (avoid wasteful workarounds)
+3. **Ensure the fix is sustainable** (don't create technical debt)
+4. **Test thoroughly** before marking as complete
+
+## Communication
+- **Explain the root cause** when presenting solutions
+- **Show efficiency gains** when optimizing (e.g., eliminating redundant files)
+- **Acknowledge when previous approaches were suboptimal**
+- **Focus on architectural improvements** over quick fixes
