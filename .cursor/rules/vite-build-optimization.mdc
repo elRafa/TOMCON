@@ -1,7 +1,3 @@
----
-description: Vite build optimization and asset management best practices
-globs: vite.config.js,package.json,*.html
----
 
 # Vite Build Optimization Rules
 
@@ -20,6 +16,59 @@ globs: vite.config.js,package.json,*.html
 - After Vite builds, verify that legal pages don't generate unnecessary separate JS files
 - Check that asset references in built HTML match actual asset filenames
 - Ensure `publicDir` assets are accessible at root paths (e.g., `/webp/image.webp` not `/images/webp/image.webp`)
+
+## Example Issue
+❌ **Bad**: `createIcons()` inside conditional block that only runs on pages with countdown
+✅ **Good**: `createIcons()` at top level of DOMContentLoaded to run on all pages
+
+## 🚨 CRITICAL: Vite Build Verification
+
+### Script Tag Placement Rule
+**ALWAYS place script tags in the `<head>` section for multi-page builds**
+
+Vite's build process is inconsistent - it only processes script tags in the `<head>` section for multi-page applications. Script tags at the end of `<body>` will be ignored during build.
+
+### Build Verification Checklist
+**After every `npm run build`, verify:**
+
+1. **Script tags are included in built HTML**:
+   ```bash
+   grep -n "script.*src.*assets" dist/index.html
+   grep -n "script.*src.*assets" dist/privacy.html
+   grep -n "script.*src.*assets" dist/terms.html
+   grep -n "script.*src.*assets" dist/refunds.html
+   ```
+
+2. **JavaScript files exist in dist/assets/**:
+   ```bash
+   ls -la dist/assets/
+   # Should see: main-*.js, guests-*.js, vendor-lucide-*.js, output-*.js
+   ```
+
+3. **Test built files locally before deployment**:
+   ```bash
+   npx serve dist
+   # Test at http://localhost:3000
+   ```
+
+### Common Vite Build Failures
+- **Script tags missing from built HTML** = Silent failure in production
+- **Inconsistent script placement** = Some pages work, others don't
+- **Query parameters in script src** = Can interfere with Vite processing
+- **Script tags at end of body** = Not processed in multi-page builds
+
+### Critical Failure Points
+- **Missing JavaScript in production** = Ticket sales broken
+- **Inconsistent behavior** = Hard to debug, costs revenue
+- **Silent build failures** = No error messages, just broken functionality
+
+### Prevention Strategy
+1. **Always use consistent script placement** (head section)
+2. **Verify build output** before deployment
+3. **Test built files locally** before deploying
+4. **Check console for JavaScript errors** in production
+
+**Remember: Vite build issues are silent killers that only appear in production and cost sales.**
 
 ## Example Issue
 ❌ **Bad**: `createIcons()` inside conditional block that only runs on pages with countdown

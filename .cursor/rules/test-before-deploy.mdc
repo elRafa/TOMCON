@@ -1,6 +1,3 @@
----
-alwaysApply: true
----
 
 # Test Before Deploy Rule
 
@@ -56,6 +53,73 @@ git push origin main
 - Asset 404 errors in network tab
 - Any visual differences from expected design
 - Functionality not working as expected
+
+### Remember
+**Local testing catches 90% of issues before they reach production. Always test locally first - it saves time and prevents broken deployments.**
+
+## 🚨 CRITICAL: Vite Build Verification
+
+### Vite Script Tag Placement Rule
+**ALWAYS place script tags in the `<head>` section for multi-page builds**
+
+❌ **Wrong**: Script tag at end of `<body>`
+```html
+</body>
+<script type="module" src="script.js"></script>
+</html>
+```
+
+✅ **Correct**: Script tag in `<head>`
+```html
+<head>
+  <!-- other head content -->
+  <script type="module" src="script.js"></script>
+</head>
+```
+
+### Build Verification Checklist
+**After `npm run build`, ALWAYS verify:**
+
+1. **Check built HTML files** in `dist/` folder:
+   ```bash
+   # Verify script tags are included in built HTML
+   grep -n "script.*src.*assets" dist/index.html
+   grep -n "script.*src.*assets" dist/privacy.html
+   ```
+
+2. **Verify JavaScript files exist** in `dist/assets/`:
+   ```bash
+   ls -la dist/assets/
+   # Should see: main-*.js, guests-*.js, vendor-lucide-*.js, etc.
+   ```
+
+3. **Test built files locally**:
+   ```bash
+   # Serve the dist folder locally
+   npx serve dist
+   # Then test in browser at http://localhost:3000
+   ```
+
+### Critical Failure Points
+- **Script tags missing from built HTML** = JavaScript won't work in production
+- **Vite not processing script tags** = Silent failure that only appears in production
+- **Inconsistent script placement** = Some pages work, others don't
+
+### Post-Deployment Verification
+**After deployment, immediately test:**
+- Ticket toggle button functionality
+- Card flip animations
+- Social media icons
+- All interactive elements
+
+### Cost of Failure
+**This rule exists because:**
+- Broken deployments cost sales
+- Users can't purchase tickets if JavaScript doesn't work
+- Production issues are harder to debug than local issues
+- Reputation damage from broken functionality
+
+**Remember: A few minutes of local testing saves hours of debugging and lost revenue.**
 
 ### Remember
 **Local testing catches 90% of issues before they reach production. Always test locally first - it saves time and prevents broken deployments.**

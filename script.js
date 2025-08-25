@@ -6,6 +6,7 @@ const DEBUG_MODE = false;
 
 // Global variables for card state management
 let currentFlippedCard = null;
+let lazyLoadingEnabled = false;
 
 // Performance optimization: Cache DOM elements
 const domCache = new Map();
