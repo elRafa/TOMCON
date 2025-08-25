@@ -10,7 +10,11 @@ module.exports = {
     "./style.css",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xs': '375px',
+      },
+    },
   },
   plugins: [],
 }

@@ -94,6 +94,13 @@ body {
         opacity: 0 !important;
         pointer-events: none !important;
     }
+    
+    /* Delay hover overlay when card is closing to prevent it from appearing before image */
+    .card-container.closing .hover-overlay {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transition-delay: 0.8s;
+    }
 }
 
 .guest-card h3,
@@ -105,6 +112,9 @@ body {
     padding-left: 1em;
     padding-right: 1em;
     padding-bottom: 1em;
+    text-align: center;
+    width: 100% !important;
+    min-width: 100%;
 }
 
 /* Lazy loading styles */
@@ -272,6 +282,8 @@ body > .card-container.flipped-reverse .card-flipper {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    width: 100% !important;
+    min-width: 100%;
 }
 
 .guest-card h3, .performer-card h3 {
@@ -353,8 +365,7 @@ body > .card-container.flipped-reverse .card-flipper {
 
 .card-back input:focus, .card-back textarea:focus {
     outline: none;
-    ring: 2px;
-    ring-color: #482124;
+    box-shadow: 0 0 0 2px #482124;
 }
 
 /* Ensure form inputs have proper text cursor */
@@ -693,6 +704,9 @@ body > .card-container.flipped-reverse .card-flipper {
     padding-left: 1em;
     padding-right: 1em;
     padding-bottom: 1em;
+    text-align: center;
+    width: 100% !important;
+    min-width: 100%;
 }
 
 /* Performer image styling */
@@ -967,3 +981,60 @@ body > .card-container.flipped-reverse .card-flipper {
     opacity: 1;
     transform: scale(1.1);
 }
+
+/* Safari Reader Mode Optimization */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    /* Ensure proper content flow for Reader mode */
+    main {
+        display: block;
+    }
+    
+    article {
+        display: block;
+    }
+    
+    /* Improve text readability in Reader mode */
+    p, h1, h2, h3, h4, h5, h6 {
+        max-width: 65ch;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    /* Ensure proper heading hierarchy */
+    h1 {
+        font-size: 2.5em;
+        line-height: 1.2;
+        margin-bottom: 0.5em;
+    }
+    
+    h2 {
+        font-size: 2em;
+        line-height: 1.3;
+        margin-bottom: 0.5em;
+    }
+    
+    h3 {
+        font-size: 1.5em;
+        line-height: 1.4;
+        margin-bottom: 0.5em;
+    }
+}
+
+/* Additional Reader Mode Hints */
+main {
+    /* Ensure main content is easily identifiable for screen readers */
+    display: block;
+}
+
+article {
+    /* Mark article content for Reader mode */
+    display: block;
+}
+
+/* Ensure text content is properly structured for Reader mode */
+.text-content, p, h1, h2, h3, h4, h5, h6 {
+    /* Help Reader mode identify readable content */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+

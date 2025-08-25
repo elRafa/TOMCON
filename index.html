@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOM Convention 2025</title>
+    <title>TOM Convention 2025 - The First-Ever Christian Alternative Rock & Hard Music Convention</title>
+    
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://checkout.tomconvention.com">
+    <link rel="dns-prefetch" href="https://identity.netlify.com">
     
     <!-- Open Graph Meta Tags for Social Media -->
     <meta property="og:title" content="TOM Convention 2025 - First-Ever Christian Alternative Rock Convention">
     <meta property="og:description" content="Join us October 24-25, 2025 at Crowne Plaza Costa Mesa for panel discussions, Q&A, autographs, photos, merch, and live music with your favorite Christian alternative rock artists from the 80s, 90s, and 00s.">
     <meta property="og:type" content="event">
     <meta property="og:url" content="https://tomconvention.com">
-    <meta property="og:image" content="https://tomconvention.com/tomcon-emblem.png">
+    <meta property="og:image" content="https://tomconvention.com/tomcon-emblem.webp">
     <meta property="og:image:alt" content="TOM Convention 2025 Official Emblem">
     <meta property="og:site_name" content="TOM Convention">
     <meta property="og:locale" content="en_US">
@@ -25,7 +31,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="TOM Convention 2025 - First-Ever Christian Alternative Rock Convention">
     <meta name="twitter:description" content="Join us October 24-25, 2025 for panel discussions, Q&A, autographs, photos, merch, and live music with your favorite Christian alternative rock artists.">
-    <meta name="twitter:image" content="https://tomconvention.com/tomcon-emblem.png">
+    <meta name="twitter:image" content="https://tomconvention.com/tomcon-emblem.webp">
     <meta name="twitter:image:alt" content="TOM Convention 2025 Official Emblem">
     
     <!-- Local Tailwind CSS -->
@@ -39,16 +45,30 @@
     <meta name="apple-mobile-web-app-title" content="TOMCON" />
     <link rel="manifest" href="/site.webmanifest" />
     
-    <!-- Custom Styles -->
-    <link href="style.css?v=26" rel="stylesheet">
-
-    <!-- Fonts and Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?display=swap&family=Hahmlet:ital,wght@0,600;0,900;1,600;1,900&family=Instrument+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Pacifico:ital,wght@0,400;1,400&family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700" rel="stylesheet" type="text/css"/>
+    <!-- Safari Reader Mode Optimization -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
     
-    <!-- Netlify Identity -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <!-- Custom Styles -->
+    <link href="style.css?v=27" rel="stylesheet">
+
+    <!-- Optimized Font Loading -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?display=swap&family=Hahmlet:ital,wght@0,600;0,900;1,600;1,900&family=Instrument+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Pacifico:ital,wght@0,400;1,400&family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?display=swap&family=Hahmlet:ital,wght@0,600;0,900;1,600;1,900&family=Instrument+Sans:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Pacifico:ital,wght@0,400;1,400&family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700" rel="stylesheet"></noscript>
+    
+    <!-- Netlify Identity - Load only when needed -->
+    <script>
+        // Only load Netlify Identity if user is logged in or on admin pages
+        if (window.location.pathname.includes('admin') || localStorage.getItem('netlify-identity')) {
+            const script = document.createElement('script');
+            script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
+            script.async = true;
+            document.head.appendChild(script);
+        }
+    </script>
 
     <!-- Pretix Widget -->
     <link rel="stylesheet" type="text/css" href="https://checkout.tomconvention.com/widget/v2.css" crossorigin>
@@ -61,10 +81,23 @@
         "@type": "MusicEvent",
         "name": "Tom Convention 2025",
         "alternateName": "TomCon 2025",
-        "description": "TOM Convention is the first-ever fan convention for all things Christian alternative rock from the 80's, 90s and 00s. Join us for panel discussions, Q&A, autographs, photos, merch, live music and your favorite artists from your favorite bands in an intimate setting.",
+        "url": "https://tomconvention.com",
+        "description": "TOM Convention is the first-ever fan convention exclusively dedicated to Christian alternative rock and hard music from the 80s, 90s, and 2000s. Join us for panel discussions, Q&A, autographs, photos, merch, live music and your favorite artists from your favorite bands in an intimate setting.",
         "image": [
-            "https://tomconvention.com/tomcon-emblem.webp",
-            "https://tomconvention.com/tomcon-emblem.png"
+            {
+                "@type": "ImageObject",
+                "url": "https://tomconvention.com/tomcon-emblem.webp",
+                "width": 1200,
+                "height": 675,
+                "caption": "TOM Convention 2025 Official Emblem"
+            },
+            {
+                "@type": "ImageObject", 
+                "url": "https://tomconvention.com/tomcon-emblem.png",
+                "width": 1200,
+                "height": 675,
+                "caption": "TOM Convention 2025 Official Emblem"
+            }
         ],
         "startDate": "2025-10-24T11:00-07:00",
         "endDate": "2025-10-25T23:00-07:00",
@@ -85,69 +118,88 @@
                 "@type": "GeoCoordinates",
                 "latitude": "33.684311",
                 "longitude": "-117.8858"
-            }
+            },
+            "telephone": "+1-714-557-3000",
+            "url": "https://www.ihg.com/crowneplaza/hotels/us/en/costa-mesa/cmoca/hoteldetail"
         },
         "organizer": {
-            "@type": "Person",
-            "name": "Mikee Bridges",
-            "url": "https://tomconvention.com"
+            "@type": "Organization",
+            "name": "TOM Convention",
+            "url": "https://tomconvention.com",
+            "founder": {
+                "@type": "Person",
+                "name": "Mikee Bridges"
+            }
         },
         "performer": [
             {
                 "@type": "Person",
                 "name": "Aaron Sprinkle",
-                "description": "Poor Old Lu, Rose Blossom Punch, Blank Books, Fair, Moontraveling Podcast"
+                "description": "Poor Old Lu, Rose Blossom Punch, Blank Books, Fair, Moontraveling Podcast",
+                "url": "https://tomconvention.com"
             },
             {
                 "@type": "Person", 
                 "name": "Allan Aguirre",
-                "description": "Scaterd Few, Spy Glass Blue, Men As Trees Walking"
+                "description": "Scaterd Few, Spy Glass Blue, Men As Trees Walking",
+                "url": "https://tomconvention.com"
             },
             {
-                "@type": "Person",
-                "name": "Derri Daugherty", 
-                "description": "The Choir, Lost Dogs, The Swirling Eddies, Dead Artist Syndrome, Kerosene Halo"
+                "@type": "Organization",
+                "name": "Kerosene Halo",
+                "description": "Michael Roe and Derri Daugherty performing together",
+                "url": "https://tomconvention.com"
             },
             {
-                "@type": "Person",
-                "name": "Eric Campuzano",
-                "description": "The Prayer Chain, Lassie Foundation, Cush, Starflyer 59, Stranger Kings, Northern Records"
+                "@type": "Organization",
+                "name": "MorZan",
+                "description": "Jyro Xhan, Mortal, Fold Zandura",
+                "url": "https://tomconvention.com"
             },
             {
-                "@type": "Person",
-                "name": "Crystal Lewis",
-                "description": "Wild Blue Yonder, Metro One"
-            },
-            {
-                "@type": "Person",
-                "name": "Jim Chaffin",
-                "description": "The Crucified, Deliverance, The Blamed, NIV"
+                "@type": "Organization",
+                "name": "Us Kids All-Stars",
+                "description": "Kevin Lee, Bill Walden, Kenny Riley, Mike Stand, Gym Nicholson, John McNamara, Chris Brigandi, Steve Pannier",
+                "url": "https://tomconvention.com"
             }
         ],
-        "offers": {
-            "@type": "Offer",
-            "name": "VIP Pass - Every ticket is a VIP pass",
-            "url": "https://checkout.tomconvention.com/",
-            "priceCurrency": "USD",
-            "availability": "https://schema.org/InStock",
-            "validFrom": "2025-08-06T00:00",
-            "description": "To keep this event intimate, only 250 tickets will be available. Every ticket is a VIP pass. Group pricing available for groups of 9 or more."
-        },
+        "offers": [
+            {
+                "@type": "Offer",
+                "name": "General VIP Pass",
+                "url": "https://checkout.tomconvention.com/",
+                "price": "157.00",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2025-08-06T00:00",
+                "description": "This VIP Pass gives you access to all panels, performances and any seat except for those in the Founder's Row (the front row)."
+            },
+            {
+                "@type": "Offer",
+                "name": "Founder's VIP Pass",
+                "url": "https://checkout.tomconvention.com/",
+                "price": "257.00",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2025-08-06T00:00",
+                "description": "For those that wish to support this special event at a higher level and help offset expenses, we offer the Founder's VIP All-access Pass. Includes assigned seat in the first row, audience question priority during Featured Artist Panels, special Founder's-only swag, and early access to the Promenade Ballroom 30 minutes before General VIP admission."
+            }
+        ],
         "doorTime": "2025-10-24T11:00-07:00",
         "duration": "P2D",
         "inLanguage": "en-US",
+        "maximumAttendeeCapacity": 250,
         "isAccessibleForFree": false,
         "keywords": [
             "Christian alternative rock",
             "90s Christian alternative rock",
-            "80s Christian rock", 
-            "00s Christian bands",
+            "80s Christian indie rock", 
+            "00s Christian indie bands",
             "music convention",
             "Costa Mesa events",
-            "Christian music festival",
             "alternative rock convention",
             "Tooth & Nail Records",
-            "Solid State Records",
+            "Blonde Vinyl Records",
             "music panels",
             "band reunions"
         ],
@@ -159,14 +211,14 @@
             {
                 "@type": "Event",
                 "name": "Panel Discussions",
-                "description": "12 total panels (6 per day), 1 hour 15 minutes each",
+                "description": "12 total panels (6 per day), 75 minutes each",
                 "startDate": "2025-10-24T11:00-07:00",
                 "endDate": "2025-10-25T23:00-07:00"
             },
             {
                 "@type": "Event", 
                 "name": "Live Music Performances",
-                "description": "Live music surprises featuring your favorite artists",
+                "description": "Unforgettable live music performances featuring your favorite artists and a once-in-a-lifetime reunion",
                 "startDate": "2025-10-24T11:00-07:00",
                 "endDate": "2025-10-25T23:00-07:00"
             }
@@ -174,14 +226,14 @@
         "about": [
             "Christian alternative rock",
             "Christian metal",
-            "Christian punk",
-            "Christian thrash",
+            "Christian punk rock",
+            "Christian thrash metal",
             "Christian indie",
             "Music history",
             "Band stories", 
-            "Music industry",
+            "Christian alt rock music industry",
             "Orange County music scene",
-            "Costa Mesa venues"
+            "Christian alternative rock band reunions"
         ]
     }
     </script>
@@ -197,7 +249,7 @@
                 "name": "What is TOM Convention?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "TOM Convention is the first-ever fan convention for all things Christian alternative rock from the 80's, 90s and 00s. Join us for panel discussions, Q&A, autographs, photos, merch hall, live music surprises and your favorite artists from your favorite bands in an intimate setting."
+                    "text": "TOM Convention is the first-ever fan convention exclusively dedicated to Christian alternative rock and hard music from the 80s, 90s, and 2000s. Join us for panel discussions, Q&A, autographs, photos, merch area, live music performances and your favorite artists from your favorite bands in an intimate setting."
                 }
             },
             {
@@ -205,7 +257,7 @@
                 "name": "When is TOM Convention 2025?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "TOM Convention 2025 takes place on Friday, October 24 and Saturday, October 25, 2025 from 11:00 AM to 11:00 PM both days."
+                    "text": "TOM Convention 2025 takes place on Friday, October 24 and Saturday, October 25, 2025 from 11:00 AM to 11:00 PM both days, with a 5pm dinner break each day."
                 }
             },
             {
@@ -213,7 +265,7 @@
                 "name": "Where is TOM Convention held?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "TOM Convention is held at the Crowne Plaza Costa Mesa Orange County, Promenade Ballroom, located at 3131 Bristol Street, Costa Mesa, CA 92626."
+                    "text": "TOM Convention is held at the Crowne Plaza Costa Mesa Orange County, Promenade Ballroom, located at 3131 Bristol Street, Costa Mesa, CA 92626. Discounted hotel rooms are available when you mention TOMCON during booking."
                 }
             },
             {
@@ -221,7 +273,7 @@
                 "name": "Who's performing at TOM Convention?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Featured guests include Aaron Sprinkle (Poor Old Lu), Allan Aguirre (Scaterd Few), Derri Daugherty (The Choir), Eric Campuzano (The Prayer Chain), Crystal Lewis, Jim Chaffin (The Crucified), and many more legendary Christian alternative rock and hard music artists."
+                    "text": "Live music performances feature Aaron Sprinkle (Poor Old Lu), Allan Aguirre (Scaterd Few), Kerosene Halo (Michael Roe & Derri Daugherty), MorZan (Jyro Xhan), and Us Kids All-Stars (Kevin Lee, Bill Walden, Kenny Riley, Mike Stand, Gym Nicholson, John McNamara, Chris Brigandi, Steve Pannier)."
                 }
             },
             {
@@ -229,7 +281,7 @@
                 "name": "How much are TOM Convention tickets?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Every ticket is a VIP pass. To keep this event intimate, only 250 tickets will be available. Ticket prices and availability can be found on our ticketing widget."
+                    "text": "Every ticket is a VIP pass. General VIP Pass is $157 and Founder's VIP Pass is $257. To keep this event intimate, only 250 tickets will be available. Group pricing available for groups of 9 or more."
                 }
             },
             {
@@ -237,44 +289,61 @@
                 "name": "What can I expect at TOM Convention?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "TOM Convention features panel discussions, Q&A sessions, autograph signings, photo opportunities, merchandise hall, live music surprises, and intimate conversations with your favorite Christian alternative rock artists. Come hear the onstage and behind-the-scenes stories of those who brought us the soundtrack to our lives."
+                    "text": "TOM Convention features 12 panel discussions (6 per day) with 54 legendary artists and 6 moderators, 5 live music performances, Q&A sessions, autograph signings, photo opportunities, merchandise hall, and intimate conversations with your favorite Christian alternative rock artists. Come hear the onstage and behind-the-scenes stories of those who brought us the soundtrack to our lives."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What record labels are represented?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Historic Christian alternative rock labels include Tooth & Nail Records, Velvet Blue Music, Floodgate Records, Northern Records, Glasshouse Records, Militia Group, and Blonde Vinyl - labels that collectively released hundreds of albums defining Christian alternative rock from the 1980s through 2000s."
                 }
             }
         ]
     }
     </script>
+    <script async src="https://eomail6.com/form/6625d4d6-7f0c-11f0-9af9-bd5ee8066298.js" data-form="6625d4d6-7f0c-11f0-9af9-bd5ee8066298"></script>
+    <script type="module" src="script.js"></script>
 </head>
 <body class="text-white antialiased">
 
-    <header class="relative md:sticky top-0 z-50 bg-gray-900/50 ring-1 ring-white/10 backdrop-blur-md px-6 py-3 flex justify-center items-center">
+    <!-- Countdown Header -->
+    <div class="relative md:sticky top-0 z-50 bg-gray-900/50 ring-1 ring-white/10 backdrop-blur-md px-6 py-3 flex justify-center items-center">
         <span id="countdown" class="font-mono text-base bg-gray-900/50 text-[#E3D6B8] px-4 py-1 rounded-lg"></span>
-    </header>
+    </div>
 
-    <div class="container mx-auto px-6 pt-[15px] pb-6 md:pb-10 max-w-4xl text-center">
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 pt-[15px] pb-6 md:pb-10 max-w-4xl text-center">
 
+        <!-- Presenter Info -->
         <div class="flex flex-col items-center mb-4 mt-0">
             <span class="block text-[#E3D6B8] bg-[#482124] font-['Hahmlet',serif] text-lg sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-3xl font-semibold tracking-[0.3em] uppercase py-4 w-full max-w-[90vw] xl:max-w-full 2xl:max-w-full sm:w-[90%] text-center lg:whitespace-nowrap break-words" style="font-family: 'Hahmlet', serif;">&nbsp;MIKEE&nbsp;BRIDGES PRESENTS</span>
         </div>
+        
+        <!-- Logo -->
         <picture>
-        <source srcset="tomcon-emblem.webp" type="image/webp">
-        <img src="tomcon-emblem.png" alt="TomCon 2025 Emblem" class="mx-auto mb-8 w-[90%] max-w-4xl">
-    </picture>
+            <source srcset="tomcon-emblem.webp" type="image/webp">
+            <img src="tomcon-emblem.png" alt="TomCon 2025 Emblem" class="mx-auto mb-8 w-[90%] max-w-4xl">
+        </picture>
 
+        <!-- Main Title -->
         <header class="mb-12 md:mb-16">
-            <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-10xl font-bold mt-2 break-words hyphens-auto">
+            <h1 class="text-5xl xs:text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-10xl font-bold mt-2">
                 TOM Convention 2025
-                </h1>
+            </h1>
             <p class="text-xl md:text-2xl font-light tracking-wider mt-2">Costa Mesa, California</p>
         </header>
 
-        <section class="mb-4 md:mb-7 space-y-6 text-base md:text-lg max-w-3xl mx-auto">
+        <!-- Main Article Content -->
+        <article class="mb-4 md:mb-7 space-y-6 text-base md:text-lg max-w-3xl mx-auto" role="main" aria-label="TOM Convention 2025 Event Information">
             <div class="bg-gray-900/30 p-6 rounded-lg ring-1 ring-white/10 mb-8">
-                <h3 class="text-xl font-semibold mb-4 text-[#E3D6B8]">🎸 Historic First: Alternative Rock and Hard Music Fan Convention</h3>
+                <h2 class="text-xl font-semibold mb-4 text-[#E3D6B8]">🎸 Historic First: Alternative Rock and Hard Music Fan Convention</h2>
                 <p><strong>TOM Convention</strong> is the <em>first-ever fan convention</em> exclusively dedicated to music from the most definitive era of the Christian alt rock and hard music scene: the 80s, 90s, and 2000s - representing over 3 decades of groundbreaking music that shaped our generation.</p>
             </div>
             
             <div class="bg-gray-900/20 p-6 rounded-lg ring-1 ring-white/10 mb-8">
-                <h4 class="text-xl font-semibold mb-4 text-[#E3D6B8]">🎤 What you are going to experience:</h4>
+                <h3 class="text-xl font-semibold mb-4 text-[#E3D6B8]">🎤 What you are going to experience:</h3>
                 <div class="grid md:grid-cols-2 gap-6">
                     <ul class="space-y-2 text-left">
                         <li>• <strong>2 full days</strong> of programming</li>
@@ -287,15 +356,15 @@
                         <li>• <strong>5 unforgettable</strong> live music performances</li>
                         <li>• <strong>Exclusive band merchandise</strong></li>
                         <li>• <strong>Only 250 tickets available</strong> for this once-in-a-lifetime event</li>
-                </ul>
+                    </ul>
                 </div>
             </div>
             
-            <p class="text-center font-medium text-[#E3D6B8]">"Come hang out with and hear the onstage and behind-the-scenes stories of those who brought us the soundtrack to our lives."</p>
+            <blockquote class="text-center font-medium text-[#E3D6B8]">"Come hang out with and hear the onstage and behind-the-scenes stories of those who brought us the soundtrack to our lives."</blockquote>
             <p class="text-center italic">Some say "never meet your heroes", but we like to live dangerously.</p>
-        </section>
+        </article>
 
-    </div>
+    </main>
 
     <!-- Event Details Section - Full Width -->
     <section id="event-details" class="mb-12 md:mb-20">
@@ -322,21 +391,21 @@
         </div>
     </section>
 
-
-
     <!-- VIP Passes Section - Full Width -->
     <section id="vip-passes" class="mb-12 md:mb-20">
         <div class="container mx-auto px-6 max-w-4xl text-center mb-6">
-            <h2 id="vip-passes" class="text-4xl md:text-6xl lg:text-8xl text-white break-words" style="font-family: 'Pacifico', cursive;">VIP Passes / Tickets</h2>
+            <h2 class="text-4xl md:text-6xl lg:text-8xl text-white break-words" style="font-family: 'Pacifico', cursive;">VIP Passes / Tickets</h2>
         </div>
         <div class="bg-[#E3D6B8] py-8 w-full">
             <div class="container mx-auto px-6 max-w-4xl text-center">
-                <p class="text-base md:text-lg text-[#482124] font-bold">Every ticket is a VIP pass.</p> <p class="text-base md:text-lg text-[#482124]">To keep this event intimate, only 250 tickets will be available. Get one quick! <br>If you have a group of 9 or more, please contact us for group pricing.</p>
+                <p class="text-base md:text-lg text-[#482124] font-bold">Every ticket is a VIP Meet & Greet Pass.</p> 
+                <p class="text-base md:text-lg text-[#482124]">To keep this event intimate, only 250 tickets will be available. Get one quick! <br>If you have a group of 9 or more, please contact us for group pricing.</p>
                 <p class="text-base md:text-lg text-[#482124] font-bold">Thank you from our all-volunteer staff for making this labor-of-love event possible.</p>
                 <button id="ticket-toggle" class="mt-4 px-6 py-3 bg-[#482124] text-[#E3D6B8] rounded-lg hover:bg-opacity-80 transition-colors text-2xl" style="font-family: 'Pacifico', cursive;">
                     Display ticket info
                 </button>
                 <div id="ticket-widget" class="mt-4 hidden">
+                    <p class="text-base md:text-lg text-[#482124]">Note: Ticket prices are the total amount and include all fees.</p>
                     <pretix-widget style="color: #482124;" event="https://checkout.tomconvention.com/"></pretix-widget>
                     <noscript>
                        <div class="pretix-widget">
@@ -350,23 +419,29 @@
         </div>
     </section>
 
-    <div class="container mx-auto px-6 pt-0 pb-8 md:pb-12 max-w-4xl text-center">
-
-        <section id="moderators" class="mb-12 md:mb-20">
+    <!-- Guest Panel Moderators Section -->
+    <section id="moderators" class="mb-12 md:mb-20">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
             <h2 class="text-4xl md:text-6xl lg:text-8xl mb-10 break-words" style="font-family: 'Pacifico', cursive;">Guest Panel Moderators</h2>
             <p class="text-lg text-[#E3D6B8] mb-6">Tap on a moderator's photo to flip their card and ask them a question.</p>
             <div id="moderator-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="performers" class="mb-12 md:mb-20">
+    <!-- Live Music Performances Section -->
+    <section id="performers" class="mb-12 md:mb-20">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
             <h2 class="text-4xl md:text-6xl lg:text-8xl mb-10 break-words" style="font-family: 'Pacifico', cursive;">Live Music Performances</h2>
             <p class="text-lg text-[#E3D6B8] mb-6">Tap on a performer's photo to flip their card and request a song or ask them a question. <br> <em>No guarantees, but we'll do our best!</em></p>
             <div id="performer-grid" class="space-y-8">
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="record-labels" class="mb-12 md:mb-20">
+    <!-- Record Labels Section -->
+    <section id="record-labels" class="mb-12 md:mb-20">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
             <h2 class="text-4xl md:text-6xl lg:text-8xl mb-6 break-words" style="font-family: 'Pacifico', cursive;">Record Labels Represented</h2>
             <div class="bg-gray-900/20 p-6 rounded-lg ring-1 ring-white/10 mb-6">
                 <h3 class="text-lg font-semibold mb-4 text-[#E3D6B8]">🏷️ Historic Christian Alternative Rock Labels at TOMCON:</h3>
@@ -385,25 +460,30 @@
                 </div>
                 <p class="text-sm mt-4 italic" style="color: #F1EADB;">These labels collectively released hundreds of albums that defined Christian alternative rock from the 1980s through 2000s.</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="featured-guests" class="mb-12 md:mb-20">
+    <!-- Featured Guest Panelists Section -->
+    <section id="featured-guests" class="mb-12 md:mb-20">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
             <h2 class="text-4xl md:text-6xl lg:text-8xl mb-10 break-words" style="font-family: 'Pacifico', cursive;">Featured Guest Panelists</h2>
             <p class="text-lg text-[#E3D6B8] mb-6">Click or tap on a panelist's photo to flip their card and ask them a question to be answered in the panel discussion at the event.</p>
             <div id="guest-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
             </div>
-        </section>
+        </div>
+    </section>
 
-
-        
-        <section id="staff" class="mb-12 md:mb-20">
+    <!-- TomCon Staff Section -->
+    <section id="staff" class="mb-12 md:mb-20">
+        <div class="container mx-auto px-6 max-w-4xl text-center">
             <h2 class="text-4xl md:text-6xl lg:text-8xl mb-10 break-words" style="font-family: 'Pacifico', cursive;">TomCon Staff</h2>
             <div id="staff-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-12">
             </div>
-        </section>
+        </div>
+    </section>
         
         <!-- About Christian Alternative Rock Section -->
-        <section id="about-christian-alternative-rock" class="mb-12 md:mb-20">
+        <section id="about-christian-alternative-rock" class="mb-6 md:mb-8">
             <div class="container mx-auto px-6 max-w-4xl text-center mb-6">
                 <h2 class="text-4xl md:text-6xl lg:text-8xl text-white break-words" style="font-family: 'Pacifico', cursive;">Some History: About Christian Alternative Rock</h2>
             </div>
@@ -436,18 +516,21 @@
             </div>
         </section>
         
-        <section id="note" class="max-w-3xl mx-auto text-[#E3D6B8] italic">
-            <p>"All of us folks that will be attending this event run the spectrum of culture, religion and politics. We welcome all, however, this event is specifically focused on the stories, connections and history of our little musical corner."</p>
-            <p class="mt-4">- Mikee</p>
+        <!-- Note Section -->
+        <section id="note" class="py-12 md:py-16 mb-8 md:mb-12 text-[#E3D6B8] italic">
+            <div class="container mx-auto px-6 max-w-4xl text-center">
+                <blockquote class="max-w-3xl mx-auto">
+                    <p class="text-lg md:text-xl leading-relaxed">"All of us folks that will be attending this event run the spectrum of culture, religion and politics. We welcome all, however, this event is specifically focused on the stories, connections and history of our little musical corner."</p>
+                    <footer class="mt-6 text-base md:text-lg">- Mikee</footer>
+                </blockquote>
+            </div>
         </section>
-
-    </div>
 
     <!-- Footer with full-width background -->
     <footer class="bg-gray-900/50 border-t border-gray-800 py-8">
         <div class="container mx-auto px-6 max-w-4xl text-center">
             <div class="flex justify-center items-center space-x-6 mb-6">
-                <a href="https://www.facebook.com/groups/tomcon" target="_blank" rel="noopener noreferrer" class="text-[#E3D6B8] hover:text-white transition-colors">
+                <a href="https://www.facebook.com/TOMConvention" target="_blank" rel="noopener noreferrer" class="text-[#E3D6B8] hover:text-white transition-colors">
                     <i data-lucide="facebook" class="w-7 h-7"></i>
                 </a>
                 <a href="https://www.instagram.com/tomconvention" target="_blank" rel="noopener noreferrer" class="text-[#E3D6B8] hover:text-white transition-colors">
@@ -455,6 +538,14 @@
                 </a>
                 <a href="https://x.com/tomconvention" target="_blank" rel="noopener noreferrer" class="text-[#E3D6B8] hover:text-white transition-colors flex items-center justify-center">
                     <span class="inline-block align-middle" style="font-size: 2rem; font-family: 'Inter', 'Instrument Sans', 'Arial', sans-serif; font-weight: bold; line-height: 1;">𝕏</span>
+                </a>
+                <a href="https://youtube.com/@TOMConvention" target="_blank" rel="noopener noreferrer" class="text-[#E3D6B8] hover:text-white transition-colors">
+                    <i data-lucide="youtube" class="w-7 h-7"></i>
+                </a>
+                <a href="https://kick.com/TOMConvention" target="_blank" rel="noopener noreferrer" class="text-[#E3D6B8] hover:text-white transition-colors">
+                    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" style="width: 24px; height: 24px; fill: currentColor;">
+                        <path d="M37 .036h164.448v113.621h54.71v-56.82h54.731V.036h164.448v170.777h-54.73v56.82h-54.711v56.8h54.71v56.82h54.73V512.03H310.89v-56.82h-54.73v-56.8h-54.711v113.62H37V.036z"/>
+                    </svg>
                 </a>
             </div>
             
@@ -471,6 +562,5 @@
         </div>
     </footer>
 
-    <script type="module" src="script.js?v=26" defer></script>
 </body>
 </html>

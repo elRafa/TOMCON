@@ -5,7 +5,7 @@
   "main": "script.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tailwindcss -i ./input.css -o ./dist/output.css",
+    "build": "vite build && tailwindcss -i ./input.css -o ./dist/output.css && cp style.css dist/",
     "preview": "vite preview",
     "optimize-images": "node optimize-images.js",
     "update-webp": "node update-html-for-webp.js && node update-guests-for-webp.js",
@@ -27,6 +27,7 @@
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.10",
+    "terser": "^5.43.1",
     "vite": "^7.1.2"
   },
   "dependencies": {

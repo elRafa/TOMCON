@@ -30,7 +30,7 @@ export const guests = [
     },
     {
         name: "Bryan Gray",
-        projects: "The Blamed, Left Out, Mortal, Rocks In Pink Cement",
+        projects: "The Blamed, Left Out, Mortal, Rocks In Pink Cement, Six Feet Deep, Cornerstone Festival, Ruido Fest",
         imageUrl: "bryan-gray.webp",
         role: "panelist",
         visibility: 1
@@ -305,7 +305,7 @@ export const guests = [
     },
     {
         name: "Michael Roe",
-        projects: "The 77's, Lost Dogs, Kerosene Halo",
+        projects: "The 77s, Lost Dogs, Kerosene Halo",
         imageUrl: "michael-roe.webp",
         role: "panelist",
         visibility: 1
@@ -319,7 +319,7 @@ export const guests = [
     },
     {
         name: "Mike Wright",
-        projects: "Freeto Boat, Fighting Jacks, Ironside Collective",
+        projects: "Freeto Boat, Fighting Jacks, Ironside Collective, Saint Didacus",
         imageUrl: "mike-wright.webp",
         role: "panelist",
         visibility: 1
@@ -431,7 +431,7 @@ export const guests = [
     },
     {
         name: "Michael Roe & Derri Daugherty",
-        projects: "Kerosene Halo, Lost Dogs, The Choir, The 77's",
+        projects: "Kerosene Halo, Lost Dogs, The Choir, The 77s",
         imageUrl: null,
         desktopImageUrl: "kerosene-halo.webp",
         mobileImageUrl: "kerosene-halo-m.webp",
@@ -464,7 +464,7 @@ export const guests = [
     },
     {
         name: "Israel Escamilla",
-        projects: "TOMCON Staff",
+        projects: "TOMCON Staff, Front of House Engineer",
         imageUrl: "israel-escamilla.webp",
         role: "staff",
         order: 4,
@@ -480,10 +480,10 @@ export const guests = [
     },
     {
         name: "Jon Sylvester",
-        projects: "TOMCON Staff",
+        projects: "TOMCON Staff, Registrar Extraordinaire",
         imageUrl: "jon-sylvester.webp",
         role: "staff",
         order: 5,
-        visibility: 0
+        visibility: 1
     }
 ];

@@ -3,86 +3,115 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
-const INPUT_DIR = './images';
-const OUTPUT_DIR = './images';
-const QUALITY = 85; // WebP quality (0-100)
-const SUPPORTED_FORMATS = ['.jpg', '.jpeg', '.png'];
+const inputDir = './images';
+const outputDir = './images';
+const quality = 80; // WebP quality
+const maxWidth = 1200; // Maximum width for large images
+const maxHeight = 1200; // Maximum height for large images
 
-// Create output directory if it doesn't exist
-if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-}
-
-async function convertToWebP(inputPath, outputPath) {
+// Image optimization function
+async function optimizeImage(inputPath, outputPath, options = {}) {
     try {
-        await sharp(inputPath)
-            .webp({ quality: QUALITY })
+        const image = sharp(inputPath);
+        const metadata = await image.metadata();
+        
+        // Resize if image is too large
+        if (metadata.width > maxWidth || metadata.height > maxHeight) {
+            image.resize(maxWidth, maxHeight, {
+                fit: 'inside',
+                withoutEnlargement: true
+            });
+        }
+        
+        // Convert to WebP with specified quality
+        await image
+            .webp({ 
+                quality: options.quality || quality,
+                effort: 6 // Higher effort for better compression
+            })
             .toFile(outputPath);
+            
+        console.log(`✅ Optimized: ${path.basename(inputPath)} -> ${path.basename(outputPath)}`);
         
         // Get file sizes for comparison
         const originalSize = fs.statSync(inputPath).size;
-        const webpSize = fs.statSync(outputPath).size;
-        const savings = ((originalSize - webpSize) / originalSize * 100).toFixed(1);
+        const optimizedSize = fs.statSync(outputPath).size;
+        const savings = ((originalSize - optimizedSize) / originalSize * 100).toFixed(1);
         
-        console.log(`✅ ${path.basename(inputPath)} → ${path.basename(outputPath)} (${savings}% smaller)`);
-        return { success: true, savings };
+        console.log(`   Size: ${(originalSize / 1024).toFixed(1)}KB -> ${(optimizedSize / 1024).toFixed(1)}KB (${savings}% smaller)`);
+        
     } catch (error) {
-        console.error(`❌ Error converting ${inputPath}:`, error.message);
-        return { success: false, error: error.message };
+        console.error(`❌ Error optimizing ${inputPath}:`, error.message);
     }
 }
 
-async function optimizeImages() {
-    console.log('🎨 Starting image optimization...\n');
+// Process all images in directory
+async function processImages() {
+    console.log('🔄 Starting image optimization...\n');
     
-    const files = fs.readdirSync(INPUT_DIR);
-    const imageFiles = files.filter(file => {
-        const ext = path.extname(file).toLowerCase();
-        return SUPPORTED_FORMATS.includes(ext);
-    });
+    if (!fs.existsSync(inputDir)) {
+        console.error(`❌ Input directory ${inputDir} does not exist`);
+        return;
+    }
     
-    console.log(`Found ${imageFiles.length} images to convert\n`);
+    const files = fs.readdirSync(inputDir);
+    const imageFiles = files.filter(file => 
+        /\.(jpg|jpeg|png)$/i.test(file) && 
+        !file.includes('.webp') && 
+        !file.includes('favicon') &&
+        !file.includes('manifest') &&
+        !file.includes('apple-touch-icon')
+    );
     
+    if (imageFiles.length === 0) {
+        console.log('ℹ️  No images found to optimize');
+        return;
+    }
+    
+    console.log(`📁 Found ${imageFiles.length} images to optimize\n`);
+    
+    let processed = 0;
     let totalOriginalSize = 0;
-    let totalWebpSize = 0;
-    let successCount = 0;
+    let totalOptimizedSize = 0;
     
     for (const file of imageFiles) {
-        const inputPath = path.join(INPUT_DIR, file);
-        const outputPath = path.join(OUTPUT_DIR, file.replace(/\.(jpg|jpeg|png)$/i, '.webp'));
+        const inputPath = path.join(inputDir, file);
+        const outputPath = path.join(outputDir, file.replace(/\.(jpg|jpeg|png)$/i, '.webp'));
+        
+        // Skip if WebP already exists and is newer
+        if (fs.existsSync(outputPath)) {
+            const inputStats = fs.statSync(inputPath);
+            const outputStats = fs.statSync(outputPath);
+            
+            if (outputStats.mtime > inputStats.mtime) {
+                console.log(`⏭️  Skipping ${file} (WebP already exists and is newer)`);
+                continue;
+            }
+        }
         
         const originalSize = fs.statSync(inputPath).size;
         totalOriginalSize += originalSize;
         
-        const result = await convertToWebP(inputPath, outputPath);
+        await optimizeImage(inputPath, outputPath);
+        processed++;
         
-        if (result.success) {
-            successCount++;
-            const webpSize = fs.statSync(outputPath).size;
-            totalWebpSize += webpSize;
+        if (fs.existsSync(outputPath)) {
+            totalOptimizedSize += fs.statSync(outputPath).size;
         }
     }
     
     console.log('\n📊 Optimization Summary:');
-    console.log(`✅ Successfully converted: ${successCount}/${imageFiles.length} images`);
-    console.log(`📁 Original size: ${(totalOriginalSize / 1024 / 1024).toFixed(2)} MB`);
-    console.log(`📁 WebP size: ${(totalWebpSize / 1024 / 1024).toFixed(2)} MB`);
-    console.log(`💾 Total savings: ${((totalOriginalSize - totalWebpSize) / totalOriginalSize * 100).toFixed(1)}%`);
-    console.log(`📂 WebP files saved to: ${OUTPUT_DIR}/`);
+    console.log(`   Processed: ${processed} images`);
+    console.log(`   Total original size: ${(totalOriginalSize / 1024 / 1024).toFixed(2)}MB`);
+    console.log(`   Total optimized size: ${(totalOptimizedSize / 1024 / 1024).toFixed(2)}MB`);
     
-    // Create a manifest file for easy reference
-    const manifest = {
-        generated: new Date().toISOString(),
-        totalImages: successCount,
-        originalSizeMB: (totalOriginalSize / 1024 / 1024).toFixed(2),
-        webpSizeMB: (totalWebpSize / 1024 / 1024).toFixed(2),
-        savingsPercent: ((totalOriginalSize - totalWebpSize) / totalOriginalSize * 100).toFixed(1),
-        quality: QUALITY
-    };
+    if (totalOriginalSize > 0) {
+        const totalSavings = ((totalOriginalSize - totalOptimizedSize) / totalOriginalSize * 100).toFixed(1);
+        console.log(`   Total savings: ${totalSavings}%`);
+    }
     
-    fs.writeFileSync(path.join(OUTPUT_DIR, 'manifest.json'), JSON.stringify(manifest, null, 2));
-    console.log(`📄 Manifest saved to: ${OUTPUT_DIR}/manifest.json`);
+    console.log('\n✅ Image optimization complete!');
 }
 
 // Run the optimization
-optimizeImages().catch(console.error);
+processImages().catch(console.error);

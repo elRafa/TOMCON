@@ -1,5 +1,5 @@
 import { guests } from './guests.js';
-import { createIcons, Facebook, Instagram } from 'lucide';
+import { createIcons, Facebook, Instagram, Youtube } from 'lucide';
 
 // DEBUG MODE: Set to true to disable lazy loading and see placeholders
 const DEBUG_MODE = false;
@@ -7,7 +7,111 @@ const DEBUG_MODE = false;
 // Global variables for card state management
 let currentFlippedCard = null;
 
+// Performance optimization: Cache DOM elements
+const domCache = new Map();
+
+function getCachedElement(id) {
+    if (!domCache.has(id)) {
+        domCache.set(id, document.getElementById(id));
+    }
+    return domCache.get(id);
+}
+
+// Optimized lazy loading with Intersection Observer
+class LazyImageLoader {
+    constructor() {
+        this.observer = null;
+        this.imagesLoaded = new Set();
+        this.loadingStartTimes = new Map();
+        this.init();
+    }
+
+    init() {
+        if ('IntersectionObserver' in window) {
+            this.observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.loadImage(entry.target);
+                            this.observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                {
+                    rootMargin: '50px 0px',
+                    threshold: 0.01
+                }
+            );
+        }
+    }
+
+    observe(element) {
+        if (this.observer) {
+            this.observer.observe(element);
+        } else {
+            // Fallback for older browsers
+            this.loadImage(element);
+        }
+    }
+
+    loadImage(element) {
+        const src = element.dataset.src;
+        const alt = element.dataset.alt;
+        
+        if (!src || this.imagesLoaded.has(src)) return;
+        
+        this.imagesLoaded.add(src);
+        this.loadingStartTimes.set(src, performance.now());
+
+        const img = new Image();
+        img.onload = () => {
+            const loadTime = performance.now() - this.loadingStartTimes.get(src);
+            if (DEBUG_MODE) {
+                console.log(`Image loaded: ${src} in ${loadTime.toFixed(2)}ms`);
+            }
+            
+            // Replace placeholder with actual image
+            const picture = document.createElement('picture');
+            const webpSource = document.createElement('source');
+            webpSource.srcset = src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+            webpSource.type = 'image/webp';
+            
+            const fallbackImg = document.createElement('img');
+            fallbackImg.src = src;
+            fallbackImg.alt = alt;
+            fallbackImg.className = 'w-full shadow-lg mb-4';
+            
+            picture.appendChild(webpSource);
+            picture.appendChild(fallbackImg);
+            
+            // Only replace if the element still exists and hasn't been moved
+            if (element.parentNode && element.parentNode.contains(element)) {
+                element.parentNode.replaceChild(picture, element);
+            }
+        };
+        
+        img.onerror = () => {
+            console.warn(`Failed to load image: ${src}`);
+            this.imagesLoaded.delete(src);
+        };
+        
+        img.src = src;
+    }
+}
+
+// Initialize lazy loader
+const lazyLoader = new LazyImageLoader();
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Lucide icons (must be outside any conditional blocks)
+    createIcons({
+        icons: {
+            Facebook,
+            Instagram,
+            Youtube
+        }
+    });
+
     // Ticket toggle functionality
     const ticketToggle = document.getElementById('ticket-toggle');
     const ticketWidget = document.getElementById('ticket-widget');
@@ -42,13 +146,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const performers = visibleGuests.filter(g => hasRole(g, 'performer'));
     const staff = visibleGuests.filter(g => hasRole(g, 'staff'));
 
-    // Lazy loading state
-    let lazyLoadingEnabled = false;
-    let imagesLoaded = new Set();
-    let loadingStartTimes = new Map();
-
     function renderGuests(list, grid, enableLazyLoading = false) {
         if (!grid) return;
+        
+        // Clear the grid first to prevent duplicates
+        grid.innerHTML = '';
+        
+        // Use DocumentFragment for better performance
+        const fragment = document.createDocumentFragment();
+        
         list.forEach(guest => {
             // Create card container for flip effect
             const cardContainer = document.createElement('div');
@@ -114,13 +220,25 @@ document.addEventListener('DOMContentLoaded', () => {
             cardFlipper.appendChild(cardFront);
             cardFlipper.appendChild(cardBack);
             cardContainer.appendChild(cardFlipper);
-            grid.appendChild(cardContainer);
+            fragment.appendChild(cardContainer);
         });
+        
+        // Append all cards at once for better performance
+        grid.appendChild(fragment);
+        
+        // Observe lazy loading images after DOM insertion
+        if (enableLazyLoading) {
+            const lazyImages = grid.querySelectorAll('.lazy-image-placeholder');
+            lazyImages.forEach(img => lazyLoader.observe(img));
+        }
     }
 
     // Function to render performers with responsive images, grouped by day
     function renderPerformers(list, grid) {
         if (!grid) return;
+        
+        // Clear the grid first to prevent duplicates
+        grid.innerHTML = '';
         
         // Group performers by day and sort by order
         const performersByDay = list.reduce((acc, performer) => {
@@ -768,6 +886,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Function to properly close a card using portal pattern
         function closeCard(cardContainer) {
+            // Add closing class to delay hover overlay
+            cardContainer.classList.add('closing');
+            
             // Remove flip and blur
             cardContainer.classList.remove('flipped', 'flipped-reverse');
             currentFlippedCard = null;
@@ -807,6 +928,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (form) form.reset();
             const overlay = cardContainer.querySelector('.success-overlay');
             if (overlay) overlay.remove();
+            
+            // Remove closing class after delay to allow hover overlay to work again
+            setTimeout(() => {
+                cardContainer.classList.remove('closing');
+            }, 800);
         }
 
         // Listen for custom closeCard events from success overlay
@@ -1097,14 +1223,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize Lucide icons (must be outside any conditional blocks)
-    createIcons({
-        icons: {
-            Facebook,
-            Instagram
-        }
-    });
-
     // Countdown timer for sticky header
     const countdownEl = document.getElementById('countdown');
     if (countdownEl) {
@@ -1132,7 +1250,8 @@ function refreshLucideIcons() {
     createIcons({
         icons: {
             Facebook,
-            Instagram
+            Instagram,
+            Youtube
         }
     });
 }
