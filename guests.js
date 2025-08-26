@@ -230,6 +230,13 @@ export const guests = [
         visibility: 1
     },
     {
+        name: "Joshua Lory",
+        projects: "L.S. Underground, Lifesavers",
+        imageUrl: "joshua-lory.webp",
+        role: "panelist",
+        visibility: 1
+    },
+    {
         name: "Judita Wignall",
         projects: "The Halo Friendlies",
         imageUrl: "judita-wignall.webp",

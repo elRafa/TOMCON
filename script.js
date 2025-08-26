@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Get first name for loading text, with special case for Us Kids All-Stars
                     const firstName = guest.name === 'Us Kids All-Stars' ? 'Us Kids All-Stars' : guest.name.split(' ')[0];
                     // Create placeholder with container-based rounded corners
-                    imageHtml = `<div class="w-full mb-4" style="border-radius: 1em 1em 0 0; overflow: hidden;">
+                    imageHtml = `<div class="w-full" style="border-radius: 1em 1em 0 0; overflow: hidden;">
                         <div class="w-full bg-gray-900 flex items-center justify-center lazy-image-placeholder" style="aspect-ratio: 2 / 3; ${DEBUG_MODE ? 'border: 3px solid red;' : ''}" data-src="${guest.imageUrl}" data-alt="${guest.name}">
                             <span class="text-gray-500">Loading ${firstName}...${DEBUG_MODE ? ' (DEBUG MODE)' : ''}</span>
                         </div>
