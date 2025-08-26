@@ -1,0 +1,164 @@
+# Lessons Learned Documentation Rule
+
+## 📚 CRITICAL: Document All Lessons Learned
+
+### Why This Rule Exists
+**Lessons learned prevent the same mistakes from happening twice and help team members avoid common pitfalls.**
+
+### When to Document Lessons Learned
+- ✅ **After solving a bug** that took significant time to debug
+- ✅ **After deployment issues** that caused problems
+- ✅ **After discovering** better ways to do things
+- ✅ **After fixing** issues that could have been prevented
+- ✅ **After learning** new best practices or patterns
+
+### What to Document
+
+#### 1. **Problem Description**
+- What went wrong or what was discovered
+- When it happened (context)
+- Impact on users/development
+
+#### 2. **Root Cause Analysis**
+- Why did this happen?
+- What assumptions were incorrect?
+- What was the actual issue?
+
+#### 3. **Solution Applied**
+- How was it fixed?
+- What code changes were made?
+- What tools or approaches worked?
+
+#### 4. **Prevention Strategy**
+- How can this be avoided in the future?
+- What checks should be added?
+- What processes need to change?
+
+#### 5. **Related Rules/Patterns**
+- Which existing rules apply?
+- What new rules should be created?
+- How does this relate to other lessons?
+
+### Documentation Format
+
+#### **Quick Format (for simple lessons):**
+```
+## 🎯 Lesson Learned: [Brief Description]
+
+**Problem:** [What happened]
+**Root Cause:** [Why it happened]
+**Solution:** [How it was fixed]
+**Prevention:** [How to avoid it]
+**Related Rules:** [Which rules apply]
+```
+
+#### **Detailed Format (for complex lessons):**
+```
+## 🎯 Lesson Learned: [Brief Description]
+
+### Problem Description
+[Detailed explanation of what went wrong]
+
+### Root Cause Analysis
+[Deep dive into why this happened]
+
+### Solution Applied
+[Step-by-step how it was resolved]
+
+### Prevention Strategy
+[Specific actions to prevent recurrence]
+
+### Related Rules
+[Links to existing or new rules]
+
+### Cost of Not Learning
+[What happens if this lesson is ignored]
+```
+
+### Where to Document
+
+#### **1. Cursor Rules (High Priority)**
+- **Create new rules** for recurring patterns
+- **Update existing rules** with new insights
+- **Add examples** to existing rules
+
+#### **2. Project Documentation**
+- **README.md** for project-specific lessons
+- **DEPLOYMENT.md** for deployment lessons
+- **TODO.md** for tracking lessons learned
+
+#### **3. Commit Messages**
+- **Include lessons learned** in commit messages
+- **Reference related rules** when applicable
+- **Explain both what and why** in commits
+
+### Examples of Lessons Learned
+
+#### **Example 1: Build Before Deploy**
+```
+## 🎯 Lesson Learned: Always Build Before Deploy
+
+**Problem:** Deployed without building, causing duplicate " 2" filenames
+**Root Cause:** deploy.sh targets ./dist but no build was run
+**Solution:** Added npm run build step before deployment
+**Prevention:** Follow deployment workflow: Build → Verify → Deploy
+**Related Rules:** deployment-and-git-workflow
+```
+
+#### **Example 2: Image Optimization**
+```
+## 🎯 Lesson Learned: WebP Images Need Fallbacks
+
+**Problem:** WebP images didn't load in older browsers
+**Root Cause:** Missing fallback image formats
+**Solution:** Added <picture> elements with WebP + JPG fallbacks
+**Prevention:** Always test image loading across different browsers
+**Related Rules:** performance-optimization-patterns
+```
+
+### Integration with Existing Rules
+
+#### **Update Related Rules**
+When documenting a lesson learned:
+1. **Check existing rules** for related content
+2. **Update those rules** with new insights
+3. **Cross-reference** between rules
+4. **Consolidate** similar lessons
+
+#### **Create New Rules**
+If a lesson learned reveals a new pattern:
+1. **Create a new rule file** in `.cursor/rules/`
+2. **Follow the rule naming convention**
+3. **Include the lesson learned** as context
+4. **Reference related rules**
+
+### Maintenance and Review
+
+#### **Regular Review**
+- **Monthly review** of lessons learned
+- **Update outdated** lessons
+- **Consolidate similar** lessons
+- **Archive resolved** lessons
+
+#### **Team Sharing**
+- **Share lessons** with team members
+- **Include in onboarding** for new developers
+- **Reference in code reviews** when applicable
+- **Use in planning** to avoid known pitfalls
+
+### Remember
+**Every bug, every deployment issue, every "aha moment" is an opportunity to make the next development cycle better. Document it, share it, and use it to improve your development process.**
+
+### Cost of Not Learning
+**Ignoring lessons learned means:**
+- **Repeating the same mistakes**
+- **Wasting time on solved problems**
+- **Frustrating team members**
+- **Reducing code quality**
+- **Increasing development costs**
+
+**Documenting lessons learned is an investment in future development efficiency.**
+description:
+globs:
+alwaysApply: true
+---

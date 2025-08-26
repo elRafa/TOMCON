@@ -11,6 +11,13 @@ globs: deploy.sh,package.json,.gitignore
 - **Check asset paths** are correct for production environment
 - **Deploy.sh targets**: Ensure `LOCAL_PATH="./dist"` not source directory
 
+### 🎯 Lesson Learned: Build Before Deploy
+**Problem:** Deployed without building, causing duplicate " 2" filenames on server
+**Root Cause:** deploy.sh targets ./dist but no build was run, causing rsync conflicts
+**Solution:** Added npm run build step before deployment
+**Prevention:** Follow deployment workflow: Build → Verify → Deploy
+**Related Rules:** lessons-learned-documentation
+
 ## Git Workflow Management
 - **Handle rebase conflicts carefully** - don't force-push without understanding changes
 - **Use descriptive commit messages** that explain both problem and solution
