@@ -25,11 +25,12 @@ npm run dev
 # 3. Build for production
 npm run build
 
-# 4. Only AFTER local testing passes:
-./deploy.sh
-git add .
-git commit -m "descriptive message"
-git push origin main
+# 4. Test locally using Vite dev server:
+npm run dev
+# Test at http://localhost:8000
+
+# 5. WAIT for user to request deployment
+# DO NOT deploy automatically - only when user asks
 ```
 
 ### What to Test Locally
@@ -53,6 +54,36 @@ git push origin main
 - Asset 404 errors in network tab
 - Any visual differences from expected design
 - Functionality not working as expected
+
+## 🔧 PORT USAGE RULE: Single Localhost Server
+
+### Port Standard
+- **Use Vite dev server only**: `http://localhost:8000`
+- **No need for separate production build testing server**
+- **Vite dev server handles both development and production-like testing**
+
+### Correct Commands
+```bash
+# Single localhost server for all testing
+npm run dev
+# Test at http://localhost:8000
+```
+
+## 🚨 DEPLOYMENT RULE: NEVER DEPLOY AUTOMATICALLY
+
+### Deployment Protocol
+- **NEVER deploy without explicit user request**
+- **ALWAYS wait for user to say "deploy" or "please deploy"**
+- **Build and test locally first, then wait for deployment permission**
+- **Only commit and push when user requests it**
+
+### Correct Workflow
+1. **Fix the issue** in code
+2. **Build locally** (`npm run build`)
+3. **Test locally** (`npm run dev`)
+4. **Report findings** to user
+5. **WAIT for deployment request**
+6. **Only then deploy** when user asks
 
 ### Remember
 **Local testing catches 90% of issues before they reach production. Always test locally first - it saves time and prevents broken deployments.**
@@ -93,11 +124,11 @@ git push origin main
    # Should see: main-*.js, guests-*.js, vendor-lucide-*.js, etc.
    ```
 
-3. **Test built files locally**:
+3. **Test locally using Vite dev server**:
    ```bash
-   # Serve the dist folder locally
-   npx serve dist
-   # Then test in browser at http://localhost:3000
+   # Use Vite dev server for all testing
+   npm run dev
+   # Test in browser at http://localhost:8000
    ```
 
 ### Critical Failure Points

@@ -7,6 +7,8 @@ const DEBUG_MODE = false;
 // Global variables for card state management
 let currentFlippedCard = null;
 let lazyLoadingEnabled = false;
+let imagesLoaded = new Set();
+let loadingStartTimes = new Map();
 
 // Performance optimization: Cache DOM elements
 const domCache = new Map();
@@ -372,13 +374,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (elapsed < minDisplayTime) {
                         // Wait for minimum display time
                         setTimeout(() => {
-                            // Create new img element and replace the placeholder
-                            const newImg = document.createElement('img');
-                            newImg.src = src;
-                            newImg.alt = alt;
-                            newImg.className = 'w-full shadow-lg mb-4';
-                            placeholder.parentNode.replaceChild(newImg, placeholder);
-                            imagesLoaded.add(src);
+                            // Safety check: ensure placeholder still exists in DOM
+                            if (placeholder && placeholder.parentNode) {
+                                // Create new img element and replace the placeholder
+                                const newImg = document.createElement('img');
+                                newImg.src = src;
+                                newImg.alt = alt;
+                                newImg.className = 'w-full shadow-lg mb-4';
+                                placeholder.parentNode.replaceChild(newImg, placeholder);
+                                imagesLoaded.add(src);
+                            }
                         }, minDisplayTime - elapsed);
                     } else {
                         // Display immediately if minimum time has passed
@@ -397,11 +402,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (elapsed < minDisplayTime) {
                         setTimeout(() => {
-                            placeholder.innerHTML = `<div class="w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
-                                <span class="text-gray-500">Image Error</span>
-                            </div>`;
-                            placeholder.className = 'w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center';
-                            imagesLoaded.add(src);
+                            // Safety check: ensure placeholder still exists in DOM
+                            if (placeholder && placeholder.parentNode) {
+                                placeholder.innerHTML = `<div class="w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
+                                    <span class="text-gray-500">Image Error</span>
+                                </div>`;
+                                placeholder.className = 'w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center';
+                                imagesLoaded.add(src);
+                            }
                         }, minDisplayTime - elapsed);
                     } else {
                         placeholder.innerHTML = `<div class="w-full shadow-lg mb-4 bg-gray-900 flex items-center justify-center" style="aspect-ratio: 2 / 3;">
@@ -417,7 +425,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Render moderators immediately (no lazy loading)
-    renderGuests(moderators, moderatorGrid, false);
+    // Sort moderators by order field
+    const sortedModerators = moderators.sort((a, b) => (a.order || 999) - (b.order || 999));
+    renderGuests(sortedModerators, moderatorGrid, false);
     
     // Render performers immediately (no lazy loading for now)
     renderPerformers(performers, performerGrid);
@@ -1235,8 +1245,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
                 const minutes = Math.floor((diff / (1000 * 60)) % 60);
-                const seconds = Math.floor((diff / 1000) % 60);
-                countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s left until TOM CON`;
+                countdownEl.textContent = `${days}d ${hours}h ${minutes}m until TOM CON`;
             } else {
                 countdownEl.textContent = 'TOM CON is happening now!';
             }

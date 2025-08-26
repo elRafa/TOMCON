@@ -4,6 +4,17 @@ body {
     font-family: 'Instrument Sans', sans-serif;
 }
 
+.emailoctopus-form-wrapper[style*="padding"], .emailoctopus-form-default[style*="padding"] {
+    padding-top: 0em !important;
+    padding: 0 !important;
+}
+
+/* Override EmailOctopus generated styles */
+[data-form="6625d4d6-7f0c-11f0-9af9-bd5ee8066298"] .emailoctopus-form-wrapper[style*="padding"], [data-form="6625d4d6-7f0c-11f0-9af9-bd5ee8066298"] .emailoctopus-form-default[style*="padding"] {
+    padding-top: 0em !important;
+    padding: 0 !important;
+}
+
 .guest-card img {
     aspect-ratio: 2 / 3;
     object-fit: cover;

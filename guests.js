@@ -54,6 +54,7 @@ export const guests = [
         projects: "The Lifters, Wild Blue Yonder, LSU, Crystal Lewis, Nobody Special",
         imageUrl: "chris-brigandi.webp",
         role: "moderator, panelist",
+        order: 3,
         visibility: 1
     },
     {
@@ -117,6 +118,7 @@ export const guests = [
         projects: "HM Magazine, Heaven's Metal Magazine, Lust Control",
         role: "moderator",
         imageUrl: "doug-van-pelt.webp",
+        order: 1,
         visibility: 1
     },
     {
@@ -131,7 +133,7 @@ export const guests = [
         projects: "TOMCON Staff, Coordinator Supreme",
         imageUrl: "eddie-harbour.webp",
         role: "moderator, staff",
-        order: 2,
+        order: 6,
         visibility: 1
     },
     {
@@ -167,6 +169,7 @@ export const guests = [
         projects: "The Rumors Are True Podcast",
         role: "moderator",
         imageUrl: "jeremy-alan-gould.webp",
+        order: 4,
         visibility: 1
     },
     {
@@ -195,6 +198,7 @@ export const guests = [
         projects: "Bad Christian Podcast, Roster Music Club",
         imageUrl: "joey-svendsen.webp",
         role: "moderator",
+        order: 5,
         visibility: 1
     },
     {
@@ -279,6 +283,7 @@ export const guests = [
         projects: "Five Iron Frenzy, The Fast Feeling",
         role: "moderator",
         imageUrl: "leanor-ortega-till.webp",
+        order: 2,
         visibility: 1
     },
     {
