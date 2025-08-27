@@ -2,8 +2,8 @@
 
 ## 🎯 **HIGH PRIORITY - Immediate Actions**
 
-### 1. **Search Console & Indexing** 🔴 URGENT
-- [ ] **Submit to Google Search Console**
+### 1. **Search Console & Indexing** ✅ COMPLETED
+- [x] **Submit to Google Search Console**
   - Add tomconvention.com to Google Search Console
   - Request indexing of main page and legal pages
   - Monitor for any validation errors
@@ -15,6 +15,10 @@
   - Include: Event Details, Artists, Tickets, Venue Info
   - Ensure mobile-friendly hamburger menu
   - Add breadcrumb navigation for better UX
+  - **On-page search feature** with half-circle design and magnifying glass icon
+    - Filter moderators, panelists, and staff sections in real-time
+    - Search field positioned prominently for easy access
+    - Responsive design that works on all devices
 
 ### 3. **Content Structure Optimization** 🔴 URGENT
 - [ ] **Add more natural language query content**
@@ -59,9 +63,25 @@
   - Embed Google Maps with Place schema
   - Nearby accommodations and dining options
 
+### 7. **New Page Creation**
+- [ ] **Contact page (`contact.html`)**
+  - Attendee support, volunteer applications, sponsorship inquiries
+  - Contact forms and information for different user types
+  - Local business signals and contact-specific SEO
+
+- [ ] **News/Press page (`news.html`)**
+  - Media coverage, podcast appearances, press releases
+  - Fresh content for search engines and authority building
+  - NewsArticle schema markup for press content
+
+- [ ] **Sponsors section on main page**
+  - Sponsorship levels and benefits
+  - Sponsor logos and information
+  - Authority and credibility signals for SEO
+
 ## 🟢 **LOWER PRIORITY - Future Enhancements**
 
-### 7. **Content Expansion**
+### 8. **Content Expansion**
 - [ ] **Add more FAQ content**
   - Expand beyond current 7 questions
   - Include technical questions about equipment
@@ -73,7 +93,7 @@
   - Include NewsArticle schema markup
   - Target music industry publications and blogs
 
-### 8. **Technical SEO Improvements**
+### 9. **Technical SEO Improvements**
 - [ ] **Image optimization schema**
   - Add ImageObject schema to artist photos
   - Include detailed alt text, captions, and metadata
@@ -84,7 +104,7 @@
   - Monitor for AI Overview appearances
   - Track target keyword performance
 
-### 9. **User Engagement Optimization**
+### 10. **User Engagement Optimization**
 - [ ] **Internal linking strategy**
   - Add related content suggestions
   - Link between artist pages and main content
@@ -169,5 +189,5 @@
 ---
 
 **Last Updated:** January 14, 2025  
-**Status:** Phase 1 Ready to Begin  
-**Next Action:** Set up Google Search Console and request indexing
+**Status:** Phase 1 In Progress - Search Console Complete  
+**Next Action:** Implement navigation structure for better site architecture
