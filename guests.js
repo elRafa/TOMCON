@@ -280,7 +280,7 @@ export const guests = [
     },
     {
         name: "Klank Diolosa",
-        projects: "Klank, Circle of Dust",
+        projects: "Klank, Circle of Dust, SynthPop Lullabye",
         imageUrl: "klank-diolosa.webp",
         role: "panelist",
         visibility: 1
@@ -366,7 +366,7 @@ export const guests = [
     },
     {
         name: "Pat Servedio",
-        projects: "Klank",
+        projects: "Klank, SynthPop Lullabye, The Trak Lodge",
         imageUrl: "pat-servedio.webp",
         role: "panelist",
         visibility: 1
