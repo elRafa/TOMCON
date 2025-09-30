@@ -51,7 +51,7 @@ export const guests = [
     },
     {
         name: "Chris Brigandi",
-        projects: "The Lifters, Wild Blue Yonder, LSU, Crystal Lewis, Nobody Special",
+        projects: "Nobody Special, L.S. Underground, Wild Blue Yonder, The Lifters, Crystal Lewis",
         imageUrl: "chris-brigandi.webp",
         role: "moderator, panelist",
         order: 3,
@@ -59,7 +59,7 @@ export const guests = [
     },
     {
         name: "Christopher Colbert",
-        projects: "Breakfast with Amy, Fluffy, Duraluxe, Blond Vinyl Records",
+        projects: "Breakfast with Amy, Fluffy, Duraluxe, Blond Vinyl Records, National Freedom Studio",
         imageUrl: "christopher-colbert.webp",
         role: "panelist",
         visibility: 1
@@ -73,7 +73,7 @@ export const guests = [
     },
     {
         name: "Crystal Lewis",
-        projects: "Wild Blue Yonder, Metro One",
+        projects: "Crystal Lewis, Wild Blue Yonder, Metro One",
         imageUrl: "crystal-lewis.webp",
         role: "panelist",
         visibility: 1
@@ -96,6 +96,13 @@ export const guests = [
         name: "David Tosti",
         projects: "Pax 217",
         imageUrl: "david-tosti.webp",
+        role: "panelist",
+        visibility: 0
+    },
+    {
+        name: "Deanna Moody",
+        projects: "The Halo Friendlies",
+        imageUrl: "deanna-moody.webp",
         role: "panelist",
         visibility: 1
     },
@@ -188,14 +195,14 @@ export const guests = [
     },
     {
         name: "Jim Worthen",
-        projects: "Tooth & Nail Records",
+        projects: "Tooth & Nail Records, Frontline Records",
         imageUrl: "jim-worthen.webp",
         role: "panelist",
         visibility: 1
     },
     {
         name: "Joey Svendsen",
-        projects: "Bad Christian Podcast, Roster Music Club",
+        projects: "Roster Music Club Podcast, Bad Christian Podcast",
         imageUrl: "joey-svendsen.webp",
         role: "moderator",
         order: 5,
@@ -227,7 +234,7 @@ export const guests = [
         projects: "Dogwood, Saint Didacus",
         imageUrl: "josh-kemble.webp",
         role: "panelist",
-        visibility: 1
+        visibility: 0
     },
     {
         name: "Joshua Lory",
@@ -265,6 +272,13 @@ export const guests = [
         visibility: 1
     },
     {
+        name: "Kevin Chen",
+        projects: "The OC Supertones, Impact, Follow Your Failure, New Liars Club, Bloodshed, Stairwell",
+        imageUrl: "kevin-chen.webp",
+        role: "panelist",
+        visibility: 1
+    },
+    {
         name: "Kevin Lee",
         projects: "The Lifesavors, LSU",
         imageUrl: "kevin-lee.webp",
@@ -273,7 +287,7 @@ export const guests = [
     },
     {
         name: "Kim Tennberg",
-        projects: "Flight 180, One Eighty, Alysons Anthem",
+        projects: "Flight 180, One Eighty, Alyson's Anthem",
         imageUrl: "kim-tennberg.webp",
         role: "panelist",
         visibility: 1
@@ -295,21 +309,21 @@ export const guests = [
     },
     {
         name: "Matthew Johnson",
-        projects: "Don't Know, Blenderhead, Roadside Monument",
+        projects: "Blenderhead, Don't Know, Roadside Monument",
         imageUrl: "matthew-johnson.webp",
         role: "panelist",
         visibility: 1
     },
     {
         name: "Matt Wignall",
-        projects: "Havalina Rail Co, Matt Death and the new Intellectuals, Jackson Rubio Records",
+        projects: "Havalina Rail Co., Matt Death and the new Intellectuals, Jackson Rubio Records",
         imageUrl: "matt-wignall.webp",
         role: "panelist",
         visibility: 1
     },
     {
         name: "Mikee Bridges",
-        projects: "TOM Fest, Gecko Monks, Sometime Sunday, Twin Sister, Tragedy Ann",
+        projects: "Twin Sister, Sometime Sunday, Tragedy Ann, Gecko Monks, TOM Fest",
         imageUrl: "mikee-bridges.webp",
         role: "host, organizer, staff",
         order: 1,
@@ -331,7 +345,7 @@ export const guests = [
     },
     {
         name: "Mike Wright",
-        projects: "Freeto Boat, Fighting Jacks, Ironside Collective, Saint Didacus",
+        projects: "Fighting Jacks, Freeto Boat, Ironside Collective, Saint Didacus, Declarations",
         imageUrl: "mike-wright.webp",
         role: "panelist",
         visibility: 1
@@ -352,21 +366,21 @@ export const guests = [
     },
     {
         name: "Neil Samoy",
-        projects: "Stairwell, Stavesacre, The Ironside Collective",
+        projects: "Stavesacre, Stairwell, The Ironside Collective",
         imageUrl: "neil-samoy.webp",
         role: "panelist",
         visibility: 1
     },
     {
         name: "Orlando Greenhill",
-        projects: "Havalina Rail Company",
+        projects: "Havalina Rail Co.",
         imageUrl: "orlando-greenhill.webp",
         role: "panelist",
         visibility: 1
     },
     {
         name: "Pat Servedio",
-        projects: "Klank, SynthPop Lullabye, The Trak Lodge",
+        projects: "Klank, SynthPop Lullabye, Elemenno Studio",
         imageUrl: "pat-servedio.webp",
         role: "panelist",
         visibility: 1
@@ -380,7 +394,7 @@ export const guests = [
     },
     {
         name: "Rob Gallas",
-        projects: "Black and White World, Undercover, Moral DK",
+        projects: "Black & White World, Undercover, Moral DK",
         imageUrl: "rob-gallas.webp",
         role: "panelist",
         visibility: 1
@@ -401,7 +415,7 @@ export const guests = [
     },
     {
         name: "Seth Roberts",
-        projects: "Watashi Wa, MXPX, Lakes, Eager Seas",
+        projects: "Watashi Wa, Eager Seas, Lakes, MxPx",
         imageUrl: "seth-roberts.webp",
         role: "panelist",
         visibility: 1
@@ -429,7 +443,7 @@ export const guests = [
     },
     {
         name: "Tim Taber",
-        projects: "The Prayer Chain, Cush, Red Strat, Transparent, Floodgate",
+        projects: "The Prayer Chain, Cush, Red Strat, Transparent Productions, Floodgate",
         imageUrl: "tim-taber.webp",
         role: "panelist",
         visibility: 1
@@ -476,7 +490,7 @@ export const guests = [
     },
     {
         name: "Israel Escamilla",
-        projects: "TOMCON Staff, Front of House Engineer",
+        projects: "TOMCON Staff, Stage Manager",
         imageUrl: "israel-escamilla.webp",
         role: "staff",
         order: 4,

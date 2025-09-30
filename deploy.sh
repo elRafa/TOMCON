@@ -60,6 +60,34 @@ done
 
 print_status "Starting deployment to $SERVER_USER@$SERVER_HOST:$REMOTE_PATH"
 
+# Clean duplicate files locally before deployment
+print_status "Cleaning duplicate files from local dist directory..."
+find "$LOCAL_PATH" -name "* [0-9]*" -type f -delete
+
+# Verify dist directory exists and is not empty
+if [ ! -d "$LOCAL_PATH" ] || [ -z "$(ls -A $LOCAL_PATH)" ]; then
+    print_error "Build directory ($LOCAL_PATH) is missing or empty!"
+    print_error "Please run: npm run build"
+    exit 1
+fi
+
+# Verify build contents before deployment
+print_status "Verifying build contents..."
+if ! npm run verify; then
+    print_error "Build verification failed!"
+    print_error "Please fix the issues above before deploying."
+    exit 1
+fi
+echo ""
+
+# Clean duplicate files from server before deployment
+print_status "Cleaning duplicate files from server..."
+ssh -p "$SERVER_PORT" "$SERVER_USER@$SERVER_HOST" "
+    if [ -d '$REMOTE_PATH' ]; then
+        find '$REMOTE_PATH' -name \"* [0-9]*\" -type f -delete 2>/dev/null || true
+    fi
+"
+
 # Check if SSH key is loaded in agent
 print_status "Checking SSH agent..."
 if ! ssh-add -l &>/dev/null; then
@@ -113,7 +141,42 @@ ssh -p "$SERVER_PORT" "$SERVER_USER@$SERVER_HOST" "
     # Set proper permissions (adjust as needed) - suppress permission errors
     chmod -R 644 '$REMOTE_PATH'/* 2>/dev/null || true
     find '$REMOTE_PATH' -type d -exec chmod 755 {} \; 2>/dev/null || true
-    
+
+    # Create .htaccess file for cache control (Apache servers)
+    if [ ! -f '$REMOTE_PATH/.htaccess' ] || ! grep -q 'Cache-Control' '$REMOTE_PATH/.htaccess'; then
+        cat >> '$REMOTE_PATH/.htaccess' << 'EOF'
+
+# Cache Control Headers - Balanced caching strategy
+<IfModule mod_headers.c>
+    # HTML files - cache for 5 minutes, then revalidate (allows updates to be seen quickly)
+    <FilesMatch \"\.html$\">
+        Header set Cache-Control \"max-age=300, must-revalidate\"
+    </FilesMatch>
+
+    # Images - cache for 1 hour, revalidate (good for guest photos that change occasionally)
+    <FilesMatch \"\.(jpg|jpeg|png|gif|webp|svg)$\">
+        Header set Cache-Control \"max-age=3600, must-revalidate\"
+    </FilesMatch>
+
+    # CSS and JS - cache for 1 day with revalidation (Vite handles content hashing)
+    <FilesMatch \"\.(css|js)$\">
+        Header set Cache-Control \"max-age=86400, must-revalidate\"
+    </FilesMatch>
+
+    # Fonts and other assets - cache for 1 week
+    <FilesMatch \"\.(woff|woff2|ttf|eot)$\">
+        Header set Cache-Control \"max-age=604800, must-revalidate\"
+    </FilesMatch>
+</IfModule>
+
+# Force refresh for all visitors on deployment
+<IfModule mod_headers.c>
+    Header set X-Deployed-At \"$(date +%s)\"
+</IfModule>
+EOF
+        echo 'Cache control headers added to .htaccess'
+    fi
+
     # Restart web server if needed (uncomment and adjust as needed)
     # sudo systemctl reload nginx
     # sudo systemctl reload apache2

@@ -1049,3 +1049,41 @@ article {
     text-size-adjust: 100%;
 }
 
+/* Project Overlay Styles - B key feature */
+.project-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Instrument Sans', sans-serif;
+    color: white;
+    text-align: center;
+    font-size: 3.3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    max-width: 90%;
+    word-wrap: break-word;
+    z-index: 10;
+    text-shadow:
+        0 2px 12px rgba(0, 0, 0, 0.36),
+        0 1px 6px rgba(0, 0, 0, 0.24),
+        1px 1px 6px rgba(0, 0, 0, 0.12);
+    pointer-events: none;
+}
+
+/* Responsive adjustments for project overlay */
+@media (max-width: 640px) {
+    .project-overlay {
+        font-size: 3rem;
+        max-width: 85%;
+    }
+}
+
+@media (max-width: 480px) {
+    .project-overlay {
+        font-size: 4rem;
+        max-width: 80%;
+    }
+}
+
+

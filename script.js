@@ -10,6 +10,100 @@ let lazyLoadingEnabled = false;
 let imagesLoaded = new Set();
 let loadingStartTimes = new Map();
 
+// Keyboard navigation variables
+let currentFocusedCard = null;
+let isKeyboardNavigationEnabled = false;
+
+// B-key feature variables
+let isProjectOverlayActive = false;
+let projectOverlays = new Map(); // Store overlay elements per card
+
+// Function to check if any card is currently flipped
+function isAnyCardFlipped() {
+    return document.querySelector('.card-flipper.flipped') !== null;
+}
+
+// Function to show/hide project name overlays
+function toggleProjectOverlays() {
+    if (isAnyCardFlipped()) {
+        // If any card is flipped, deactivate the feature
+        isProjectOverlayActive = false;
+        hideAllProjectOverlays();
+        return;
+    }
+
+    isProjectOverlayActive = !isProjectOverlayActive;
+
+    if (isProjectOverlayActive) {
+        showAllProjectOverlays();
+    } else {
+        hideAllProjectOverlays();
+    }
+}
+
+// Function to show project overlays on all cards
+function showAllProjectOverlays() {
+    // Only show overlays on moderator and guest panelist cards
+    const moderatorCards = document.querySelectorAll('#moderators .card-container');
+    const guestCards = document.querySelectorAll('#featured-guests .card-container');
+
+    // Combine both sections
+    const targetCards = [...moderatorCards, ...guestCards];
+
+    // Special case: Also include Mikee from staff section
+    const mikeeCard = document.querySelector('#staff .card-container h3');
+    if (mikeeCard && mikeeCard.textContent === 'Mikee Bridges') {
+        const mikeeContainer = mikeeCard.closest('.card-container');
+        if (mikeeContainer) {
+            targetCards.push(mikeeContainer);
+        }
+    }
+
+    targetCards.forEach(card => {
+        const guestName = card.querySelector('h3')?.textContent;
+        if (guestName && guests.some(g => g.name === guestName && g.visibility === 1)) {
+            showProjectOverlay(card, guestName);
+        }
+    });
+}
+
+// Function to hide all project overlays
+function hideAllProjectOverlays() {
+    projectOverlays.forEach(overlay => {
+        if (overlay && overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+        }
+    });
+    projectOverlays.clear();
+}
+
+// Function to show project overlay for a specific card
+function showProjectOverlay(card, guestName) {
+    // Skip if overlay already exists
+    if (projectOverlays.has(card)) {
+        return;
+    }
+
+    const guest = guests.find(g => g.name === guestName);
+    if (!guest || !guest.projects) return;
+
+    // Get the first project name
+    const firstProject = guest.projects.split(',')[0].trim();
+
+    // Create overlay element
+    const overlay = document.createElement('div');
+    overlay.className = 'project-overlay';
+    overlay.textContent = firstProject;
+
+    // Position overlay over the image
+    const imageContainer = card.querySelector('.card-front');
+    if (imageContainer) {
+        imageContainer.style.position = 'relative';
+        imageContainer.appendChild(overlay);
+        projectOverlays.set(card, overlay);
+    }
+}
+
 // Performance optimization: Cache DOM elements
 const domCache = new Map();
 
@@ -174,11 +268,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (guest.imageUrl) {
                 if (enableLazyLoading) {
                     // Get first name for loading text, with special case for Us Kids All-Stars
-                    const firstName = guest.name === 'Us Kids All-Stars' ? 'Us Kids All-Stars' : guest.name.split(' ')[0];
+                    const displayName = guest.name === 'Us Kids All-Stars' ? 'Us Kids All-Stars' : guest.name.split(' ')[0];
                     // Create placeholder with container-based rounded corners
                     imageHtml = `<div class="w-full" style="border-radius: 1em 1em 0 0; overflow: hidden;">
                         <div class="w-full bg-gray-900 flex items-center justify-center lazy-image-placeholder" style="aspect-ratio: 2 / 3; ${DEBUG_MODE ? 'border: 3px solid red;' : ''}" data-src="${guest.imageUrl}" data-alt="${guest.name}">
-                            <span class="text-gray-500">Loading ${firstName}...${DEBUG_MODE ? ' (DEBUG MODE)' : ''}</span>
+                            <span class="text-gray-500">Loading ${displayName}...${DEBUG_MODE ? ' (DEBUG MODE)' : ''}</span>
                         </div>
                     </div>`;
                 } else {
@@ -197,10 +291,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Check if guest has questions
             const guestQuestions = getGuestQuestions(guest.name);
             const questionCount = guestQuestions.length;
-            const firstName = guest.name.split(' ')[0];
+            const displayName = guest.name.split(' ')[0];
             const hoverText = questionCount >= 2 ? 
-                `Edit or delete your questions for ${firstName}` : 
-                `Ask ${firstName} a question to be considered during the Audience Q&A`;
+                `Edit or delete your questions for ${displayName}` : 
+                `Ask ${displayName} a question to be considered during the Audience Q&A`;
             
             cardFront.innerHTML = `
                 <div class="image-section">
@@ -310,9 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         imageHtml += `</picture>`;
                     } else {
                         // Create placeholder with responsive aspect ratios
-                        const firstName = performer.name === 'Us Kids All-Stars' ? 'Us Kids All-Stars' : performer.name.split(' ')[0];
+                        const displayName = performer.name === 'Us Kids All-Stars' ? 'Us Kids All-Stars' : performer.name.split(' ')[0];
                         imageHtml = `<div class="performer-placeholder w-full mb-4">
-                            <span class="text-gray-500">Loading ${firstName}...</span>
+                            <span class="text-gray-500">Loading ${displayName}...</span>
                         </div>`;
                     }
 
@@ -338,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Create back face with dynamic question form/list
                     const cardBack = document.createElement('div');
                     cardBack.className = 'card-back';
-                    cardBack.innerHTML = renderCardBack(performer.name);
+                    cardBack.innerHTML = renderCardBack(performer.name, true);
                     
                     // Assemble the card
                     cardFlipper.appendChild(cardFront);
@@ -583,10 +677,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     hoverOverlay.textContent = performerHoverText;
                 } else {
                     // For guests, use first name only
-                    const firstName = guestName.split(' ')[0];
+                    const displayName = guestName.split(' ')[0];
                     const guestHoverText = questionCount >= 2 ? 
-                        `Edit or delete your questions for ${firstName}` : 
-                        `Ask ${firstName} a question to be considered during the Audience Q&A`;
+                        `Edit or delete your questions for ${displayName}` : 
+                        `Ask ${displayName} a question to be considered during the Audience Q&A`;
                     hoverOverlay.textContent = guestHoverText;
                 }
             }
@@ -614,15 +708,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Dynamic UI Rendering Functions
-    function renderCardBack(guestName) {
-        const firstName = guestName.split(' ')[0];
+    function renderCardBack(guestName, useFullName = false) {
+        // For performers, use full name; for others, use first name only
+        const displayName = useFullName ? guestName : guestName.split(' ')[0];
         const storedQuestions = getStoredQuestions(guestName);
         const questionCount = storedQuestions.length;
         const draft = getDraft(guestName);
-        
+
         let content = `
             <button class="close-btn" aria-label="Close">&times;</button>
-            <h3>Ask ${firstName} a Question</h3>
+            <h3>Ask ${displayName} a Question</h3>
         `;
         
         // State 0: Show form (0 questions)
@@ -637,7 +732,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <input type="text" name="submitter" placeholder="Your name (optional)" value="${draft?.submitter || ''}" />
                     <input type="email" name="email" placeholder="Your email (optional)" value="${draft?.email || ''}" />
-                    <p class="email-description">Adding your email above will allow ${firstName} to respond to you in case your question doesn't get addressed during the event.</p>
+                    <p class="email-description">Adding your email above will allow ${displayName} to respond to you in case your question doesn't get addressed during the event.</p>
                     <div class="form-buttons">
                         <button type="submit" class="submit-btn">Submit Question</button>
                     </div>
@@ -656,14 +751,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <input type="text" name="submitter" placeholder="Your name (optional)" value="${draft?.submitter || ''}" />
                     <input type="email" name="email" placeholder="Your email (optional)" value="${draft?.email || ''}" />
-                    <p class="email-description">Adding your email above will allow ${firstName} to respond to you in case your question doesn't get addressed during the event.</p>
+                    <p class="email-description">Adding your email above will allow ${displayName} to respond to you in case your question doesn't get addressed during the event.</p>
                     <div class="form-buttons">
                         <button type="submit" class="submit-btn">Submit Question</button>
                     </div>
                 </form>
                 
                 <div class="question-divider">
-                    <p class="question-status-text">You have 1 question for ${firstName}:</p>
+                    <p class="question-status-text">You have 1 question for ${displayName}:</p>
                 </div>
                 
                 <div class="question-list">
@@ -675,7 +770,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (questionCount === 2) {
             content += `
                 <div class="question-limit-message">
-                    <p class="question-status-text">You've reached the limit (2/2 questions for ${firstName}):</p>
+                    <p class="question-status-text">You've reached the limit (2/2 questions for ${displayName}):</p>
                     <p class="question-instruction">Remove a question to add a new one.</p>
                 </div>
                 
@@ -880,6 +975,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Prevent page scrolling while card is flipped
                     document.body.style.overflow = 'hidden';
                     
+                    // Deactivate project overlay feature when flipping card
+                    if (isProjectOverlayActive) {
+                        isProjectOverlayActive = false;
+                        hideAllProjectOverlays();
+                    }
+
                     // Add slight delay to ensure positioning is set before flip animation
                     requestAnimationFrame(() => {
                         // Flip the card and blur background
@@ -899,7 +1000,13 @@ document.addEventListener('DOMContentLoaded', () => {
         function closeCard(cardContainer) {
             // Add closing class to delay hover overlay
             cardContainer.classList.add('closing');
-            
+
+            // Deactivate project overlay feature when closing card
+            if (isProjectOverlayActive) {
+                isProjectOverlayActive = false;
+                hideAllProjectOverlays();
+            }
+
             // Remove flip and blur
             cardContainer.classList.remove('flipped', 'flipped-reverse');
             currentFlippedCard = null;
@@ -1233,6 +1340,526 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // Keyboard Navigation System
+    function initializeKeyboardNavigation() {
+        // Define all card grids and their section headings
+        const sections = [
+            {
+                heading: document.querySelector('#moderators h2'),
+                grid: document.getElementById('moderator-grid')
+            },
+            {
+                heading: document.querySelector('#performers h2'),
+                grid: document.getElementById('performer-grid')
+            },
+            {
+                heading: document.querySelector('#featured-guests h2'),
+                grid: document.getElementById('guest-grid')
+            },
+            {
+                heading: document.querySelector('#staff h2'),
+                grid: document.getElementById('staff-grid')
+            }
+        ];
+
+        // Debug: Log section detection
+        // console.log('Sections initialized:', sections.map(s => ({
+        //     heading: s.heading ? s.heading.textContent : 'null',
+        //     gridId: s.grid ? s.grid.id : 'null'
+        // })));
+
+        // Get all navigable elements (cards, section headings, and day headings within performers)
+        function getAllNavigableElements() {
+            const elements = [];
+
+            sections.forEach(section => {
+                if (section.heading) elements.push(section.heading);
+                if (section.grid) {
+                    // Special handling for performers section with day containers
+                    if (section.grid.id === 'performer-grid') {
+                        // Get all day headings and cards within the performer section
+                        const allChildren = section.grid.querySelectorAll('h3, .card-container');
+                        allChildren.forEach(child => elements.push(child));
+                    } else {
+                        // Normal handling for other sections
+                        const cards = section.grid.querySelectorAll('.card-container');
+                        cards.forEach(card => elements.push(card));
+                    }
+                }
+            });
+
+            return elements;
+        }
+
+        // Find the currently visible element based on scroll position
+        function findCurrentlyVisibleElement() {
+            const elements = getAllNavigableElements();
+            const viewportHeight = window.innerHeight;
+            const viewportCenter = viewportHeight / 2;
+
+            // Find elements that are visible in the viewport
+            const visibleElements = elements.filter(element => {
+                const rect = element.getBoundingClientRect();
+                // Element is visible if any part of it is in the viewport
+                return rect.bottom > 0 && rect.top < viewportHeight;
+            });
+
+            if (visibleElements.length === 0) return null;
+
+            // Find the element closest to the center of the viewport
+            let closestElement = visibleElements[0];
+            let minDistance = Math.abs(viewportCenter - closestElement.getBoundingClientRect().top);
+
+            visibleElements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                const distance = Math.abs(viewportCenter - rect.top);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestElement = element;
+                }
+            });
+
+            return closestElement;
+        }
+
+        // Get current grid layout (columns)
+        function getGridColumns(grid) {
+            if (!grid) return 1;
+
+            // Check if we're on mobile (sm breakpoint and below = 1 column)
+            const isMobile = window.innerWidth < 640;
+            const columns = isMobile ? 1 : 2;
+
+            return columns;
+        }
+
+        // Find next card in vertical direction
+        function findNextCard(currentCard, direction, columns) {
+            // Find the grid container - it could be any of the specific grid IDs
+            const grid = currentCard.closest('[id$="-grid"]');
+            if (!grid) return null;
+
+
+            // Special handling for performer grid with day containers
+            if (grid.id === 'performer-grid') {
+                return findNextPerformerCard(currentCard, direction);
+            }
+
+            // Normal handling for other grids
+            const cards = Array.from(grid.querySelectorAll('.card-container'));
+            const currentIndex = cards.indexOf(currentCard);
+
+
+            if (currentIndex === -1) return null;
+
+            const rows = Math.ceil(cards.length / columns);
+            const currentRow = Math.floor(currentIndex / columns);
+            const currentCol = currentIndex % columns;
+
+            let nextRow, nextCol;
+
+            if (direction === 'up') {
+                nextRow = currentRow - 1;
+                nextCol = currentCol;
+            } else { // down
+                nextRow = currentRow + 1;
+                nextCol = currentCol;
+            }
+
+            // console.log('Calculated position:', {
+            //     currentRow: currentRow,
+            //     currentCol: currentCol,
+            //     nextRow: nextRow,
+            //     nextCol: nextCol,
+            //     totalRows: rows,
+            //     totalCards: cards.length,
+            //     columns: columns
+            // });
+
+            // Check bounds
+            if (nextRow < 0 || nextRow >= rows) {
+                // console.log('Out of bounds, returning null');
+                return null; // No card in this direction
+            }
+
+            const nextIndex = nextRow * columns + nextCol;
+            // console.log('Calculated nextIndex:', nextIndex, 'cards.length:', cards.length);
+
+            if (nextIndex >= cards.length) {
+                // console.log('nextIndex exceeds cards length, returning null');
+                return null;
+            }
+
+            const result = cards[nextIndex] || null;
+            // console.log('Returning card at index:', nextIndex, result);
+            return result;
+        }
+
+        // Special navigation for performer cards within day containers
+        function findNextPerformerCard(currentCard, direction) {
+            const grid = currentCard.closest('[id$="-grid"]');
+            if (!grid || grid.id !== 'performer-grid') return null;
+
+            // Find the day container that contains this card
+            const dayContainer = currentCard.closest('.space-y-6');
+            if (!dayContainer) return null;
+
+            // Get all cards in the same day container
+            const cardsInDay = Array.from(dayContainer.querySelectorAll('.card-container'));
+            const currentIndex = cardsInDay.indexOf(currentCard);
+
+            if (currentIndex === -1) return null;
+
+            let nextIndex;
+            if (direction === 'up') {
+                nextIndex = currentIndex - 1;
+            } else { // down
+                nextIndex = currentIndex + 1;
+            }
+
+            // If there's a card in the same day container, return it
+            if (nextIndex >= 0 && nextIndex < cardsInDay.length) {
+                const result = cardsInDay[nextIndex];
+                return result;
+            }
+
+            // No more cards in this day container, return null to trigger section navigation
+            return null;
+        }
+
+        // Find section heading for navigation
+        function findSectionHeading(card, direction) {
+            // Find current section by grid ID instead of contains() method
+            const grid = card.closest('[id$="-grid"]');
+            if (!grid) return null;
+            const currentSection = sections.find(section => section.grid && section.grid.id === grid.id);
+
+            if (!currentSection) return null;
+
+            // Special handling for performer section
+            if (currentSection.grid.id === 'performer-grid') {
+                const nextDayHeading = findNextDayHeading(card, direction);
+                if (nextDayHeading) {
+                    return nextDayHeading;
+                }
+                // No more day headings, fall through to section navigation
+            }
+
+            // Default section navigation
+            const currentSectionIndex = sections.indexOf(currentSection);
+
+            if (direction === 'up' && currentSectionIndex > 0) {
+                const result = sections[currentSectionIndex - 1].heading;
+                return result;
+            } else if (direction === 'down' && currentSectionIndex < sections.length - 1) {
+                const result = sections[currentSectionIndex + 1].heading;
+                return result;
+            } else if (direction === 'down' && currentSectionIndex === sections.length - 1) {
+                // At the last section, wrap around to the first section
+                const result = sections[0].heading;
+                return result;
+            } else if (direction === 'up' && currentSectionIndex === 0) {
+                // At the first section, wrap around to the last section
+                const result = sections[sections.length - 1].heading;
+                return result;
+            }
+
+            return null;
+        }
+
+        // Find next day heading within performer section
+        function findNextDayHeading(card, direction) {
+            const grid = card.closest('[id$="-grid"]');
+            if (!grid || grid.id !== 'performer-grid') return null;
+
+            // Get all day headings in the performer grid (exclude performer names and question form headings)
+            const dayHeadings = Array.from(grid.querySelectorAll('h3.text-2xl.font-bold.text-center.mb-6.mt-8'));
+
+            const dayContainer = card.closest('.space-y-6');
+            if (!dayContainer) return null;
+
+            // Find the day heading that comes before this container
+            const currentDayHeadingIndex = dayHeadings.findIndex(heading => {
+                const nextElement = heading.nextElementSibling;
+                return nextElement && nextElement.contains(card);
+            });
+
+            if (currentDayHeadingIndex === -1) return null;
+
+            let nextDayHeadingIndex;
+            if (direction === 'up') {
+                nextDayHeadingIndex = currentDayHeadingIndex - 1;
+            } else { // down
+                nextDayHeadingIndex = currentDayHeadingIndex + 1;
+            }
+
+            // If there's another day heading in the performer section, return it
+            if (nextDayHeadingIndex >= 0 && nextDayHeadingIndex < dayHeadings.length) {
+                return dayHeadings[nextDayHeadingIndex];
+            }
+
+            // No more day headings in performer section
+            return null;
+        }
+
+        // Fast scroll function - double speed compared to default smooth scroll
+        function fastScrollToElement(element) {
+            const elementRect = element.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+
+            // Calculate target scroll position (center the element)
+            const targetY = window.scrollY + elementRect.top - (viewportHeight / 2) + (elementRect.height / 2);
+            const targetX = window.scrollX + elementRect.left - (viewportWidth / 2) + (elementRect.width / 2);
+
+            // Use requestAnimationFrame for smooth but fast scrolling
+            const startY = window.scrollY;
+            const startX = window.scrollX;
+            const distanceY = targetY - startY;
+            const distanceX = targetX - startX;
+
+            // Fast duration (half of typical smooth scroll)
+            const duration = 150; // milliseconds
+            const startTime = performance.now();
+
+            function scrollStep(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Easing function for smooth acceleration/deceleration
+                const easeInOutCubic = progress < 0.5
+                    ? 4 * progress * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+                window.scrollTo(
+                    startX + distanceX * easeInOutCubic,
+                    startY + distanceY * easeInOutCubic
+                );
+
+                if (progress < 1) {
+                    requestAnimationFrame(scrollStep);
+                }
+            }
+
+            requestAnimationFrame(scrollStep);
+        }
+
+        // Navigate to next element
+        function navigateToElement(element, direction) {
+            // Remove focus from current element
+            if (currentFocusedCard) {
+                currentFocusedCard.classList.remove('keyboard-focus');
+            }
+
+            if (element) {
+                // Add focus to new element
+                currentFocusedCard = element;
+                element.classList.add('keyboard-focus');
+
+                // Fast scroll element into view (double speed)
+                fastScrollToElement(element);
+
+                // If it's a heading, focus it for screen readers
+                if (element.tagName === 'H2') {
+                    element.focus();
+                }
+            } else {
+                // Clear focus if no element
+                currentFocusedCard = null;
+            }
+        }
+
+        // Handle keyboard navigation
+        function handleKeyboardNavigation(event) {
+            // Only handle if not typing in a form
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            const key = event.key.toLowerCase();
+
+            // Enable navigation on first key press
+            if (!isKeyboardNavigationEnabled && (key === 'arrowup' || key === 'arrowdown' || key === 'w' || key === 's')) {
+                isKeyboardNavigationEnabled = true;
+
+                // Check if current focused element is still visible
+                let shouldUpdateFocus = false;
+                if (currentFocusedCard) {
+                    const rect = currentFocusedCard.getBoundingClientRect();
+                    const isVisible = rect.bottom > 0 && rect.top < window.innerHeight;
+                    if (!isVisible) {
+                        shouldUpdateFocus = true;
+                    }
+                } else {
+                    shouldUpdateFocus = true;
+                }
+
+                // Update focus to currently visible element if needed
+                if (shouldUpdateFocus) {
+                    const visibleElement = findCurrentlyVisibleElement();
+                    if (visibleElement) {
+                        navigateToElement(visibleElement, null);
+                    } else {
+                        // Fallback to first element if no visible element found
+                        const allElements = getAllNavigableElements();
+                        if (allElements.length > 0) {
+                            navigateToElement(allElements[0], null);
+                        }
+                    }
+                }
+                event.preventDefault();
+                return;
+            }
+
+            // Handle navigation keys
+            if (isKeyboardNavigationEnabled && (key === 'arrowup' || key === 'arrowdown' || key === 'w' || key === 's')) {
+                event.preventDefault();
+
+                if (!currentFocusedCard) return;
+
+                let nextElement = null;
+                const direction = (key === 'arrowup' || key === 'w') ? 'up' : 'down';
+
+                // Debug logging (remove in production)
+                // console.log('Navigation:', {
+                //     currentElement: currentFocusedCard,
+                //     direction: direction,
+                //     currentElementType: currentFocusedCard.tagName || currentFocusedCard.className
+                // });
+
+                // If current element is a heading, navigate to next section (not back to cards)
+                if (currentFocusedCard.tagName === 'H2') {
+                    // Always go to the next section when navigating from a section heading
+                    nextElement = findSectionHeading(currentFocusedCard, direction);
+
+                    // If no next section found, go to the first card in the current section
+                    if (!nextElement) {
+                        const section = sections.find(s => s.heading === currentFocusedCard);
+                        if (section && section.grid) {
+                            const cards = section.grid.querySelectorAll('.card-container');
+                            if (cards.length > 0) {
+                                nextElement = direction === 'down' ? cards[0] : cards[cards.length - 1];
+                            }
+                        }
+                    }
+                }
+                // Handle H3 day headings in performer section
+                else if (currentFocusedCard.tagName === 'H3') {
+                    // For day headings, navigate to the first card in that day's section
+                    const grid = currentFocusedCard.closest('[id$="-grid"]');
+                    if (grid && grid.id === 'performer-grid') {
+                        // Find the day container that follows this heading
+                        const dayContainer = currentFocusedCard.nextElementSibling;
+                        if (dayContainer && dayContainer.classList.contains('space-y-6')) {
+                            const firstCard = dayContainer.querySelector('.card-container');
+                            if (firstCard) {
+                                nextElement = firstCard;
+                            }
+                        }
+                    }
+
+                    // If we can't find a card in the day section, fall back to section navigation
+                    if (!nextElement) {
+                        nextElement = findSectionHeading(currentFocusedCard, direction);
+                    }
+                }
+                // If current element is a card, navigate to next card or section heading
+                else if (currentFocusedCard.classList.contains('card-container')) {
+                    const grid = currentFocusedCard.closest('[id$="-grid"]');
+                    if (!grid) return;
+
+                    const columns = getGridColumns(grid);
+                    nextElement = findNextCard(currentFocusedCard, direction, columns);
+
+                    // If no card in current direction, go directly to next section
+                    if (!nextElement) {
+                        nextElement = findSectionHeading(currentFocusedCard, direction);
+                    }
+                }
+
+
+                if (nextElement) {
+                    navigateToElement(nextElement, direction);
+                }
+            }
+
+            // Handle Escape key to exit keyboard navigation
+            if (key === 'escape' && isKeyboardNavigationEnabled) {
+                if (currentFocusedCard) {
+                    currentFocusedCard.classList.remove('keyboard-focus');
+                }
+                currentFocusedCard = null;
+                isKeyboardNavigationEnabled = false;
+            }
+
+            // Handle B key to toggle project overlay feature
+            if (key === 'b' && !isAnyCardFlipped()) {
+                event.preventDefault();
+                toggleProjectOverlays();
+            }
+        }
+
+        // Add keyboard event listener
+        document.addEventListener('keydown', handleKeyboardNavigation);
+
+        // Handle clicks to disable keyboard navigation mode
+        document.addEventListener('click', () => {
+            if (isKeyboardNavigationEnabled) {
+                if (currentFocusedCard) {
+                    currentFocusedCard.classList.remove('keyboard-focus');
+                }
+                currentFocusedCard = null;
+                isKeyboardNavigationEnabled = false;
+            }
+        });
+
+        // Handle window resize to update grid layout awareness
+        window.addEventListener('resize', () => {
+            // Recalculate navigation if needed
+            if (isKeyboardNavigationEnabled && currentFocusedCard) {
+                // Keep current focus but ensure it's still valid
+                const allElements = getAllNavigableElements();
+                if (!allElements.includes(currentFocusedCard)) {
+                    currentFocusedCard.classList.remove('keyboard-focus');
+                    currentFocusedCard = null;
+                }
+            }
+        });
+
+        // Handle scroll events to update navigation context
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            // Debounce scroll events
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if (isKeyboardNavigationEnabled) {
+                    // Check if current focused element is still visible
+                    let shouldUpdateFocus = false;
+                    if (currentFocusedCard) {
+                        const rect = currentFocusedCard.getBoundingClientRect();
+                        const isVisible = rect.bottom > 0 && rect.top < window.innerHeight;
+                        if (!isVisible) {
+                            shouldUpdateFocus = true;
+                        }
+                    } else {
+                        shouldUpdateFocus = true;
+                    }
+
+                    // Update focus to currently visible element if needed
+                    if (shouldUpdateFocus) {
+                        const visibleElement = findCurrentlyVisibleElement();
+                        if (visibleElement && visibleElement !== currentFocusedCard) {
+                            navigateToElement(visibleElement, null);
+                        }
+                    }
+                }
+            }, 150); // 150ms debounce
+        });
+    }
+
+    // Initialize keyboard navigation
+    initializeKeyboardNavigation();
 
     // Countdown timer for sticky header
     const countdownEl = document.getElementById('countdown');
