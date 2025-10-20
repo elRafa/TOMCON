@@ -3,31 +3,31 @@ description: CSS styling and Tailwind debugging methodologies
 globs: *.css,*.html,style.css
 ---
 
-# CSS Styling and Debugging Rules
+# CSS Styling and Debugging
 
-## Background Color Issues
-- **Root Cause**: Tailwind utility classes (like `bg-gray-900`) override CSS file styles
-- **Solution**: Remove conflicting Tailwind classes and let CSS file handle styling
-- **Example**: Remove `bg-gray-900` from `<body>` to allow `style.css` background to apply
+## Quick Reference
+- **Color palette**: [docs/07-ui-ux-design.md](mdc:docs/07-ui-ux-design.md#color-palette)
+- **Component patterns**: [docs/07-ui-ux-design.md](mdc:docs/07-ui-ux-design.md#component-design)
+- **Responsive design**: [docs/07-ui-ux-design.md](mdc:docs/07-ui-ux-design.md#responsive-design)
+- **Typography system**: [docs/07-ui-ux-design.md](mdc:docs/07-ui-ux-design.md#typography-hierarchy)
 
-## CSS Specificity Management
-- Check [style.css](mdc:style.css) for global styles before adding Tailwind overrides
-- Use `!important` sparingly - prefer removing conflicting classes
-- When debugging visual issues, always check both Tailwind classes AND custom CSS
-
-## Border Radius and Visual Styling
-- For animated elements, apply border-radius to containing elements, not the animated element itself
-- Use `overflow: hidden` on containers when child elements need clipping
-- Remove redundant border-radius declarations that conflict with container styling
+## Critical Issues
+- **Tailwind conflicts**: Remove conflicting classes, check [style.css](mdc:style.css) for global styles
+- **Background colors**: #482124 (burgundy), #E3D6B8 (cream) - see docs for complete palette
+- **CSS specificity**: Use `!important` sparingly - prefer removing conflicting classes
 
 ## Debug Workflow
-1. **Identify the actual problem** - don't just treat symptoms
-2. **Check CSS cascade** - Tailwind vs custom CSS conflicts
-3. **Use browser dev tools** to see computed styles
-4. **Test with debug flags** (like `DEBUG_MODE`) to isolate issues
-5. **Verify changes** work on both localhost and live deployment
+1. **Check CSS cascade** - Tailwind vs custom CSS conflicts
+2. **Use browser dev tools** to see computed styles
+3. **Test with debug flags** (like `DEBUG_MODE`) to isolate issues
+4. **Verify changes** work on both localhost and live deployment
 
-## Font and Typography
-- Use CSS custom properties for brand colors (#482124)
-- Apply font families through style attributes when Tailwind classes conflict
-- Remove inherited bold styling at the source, not by adding `font-normal`
+## Common Patterns
+- **For animated elements**: Apply border-radius to containing elements, not the animated element itself
+- **Use `overflow: hidden`** on containers when child elements need clipping
+- **Remove redundant border-radius** declarations that conflict with container styling
+
+## When to Check Docs
+- **Color questions** → [docs/07-ui-ux-design.md](mdc:docs/07-ui-ux-design.md)
+- **Component patterns** → [docs/07-ui-ux-design.md](mdc:docs/07-ui-ux-design.md)
+- **Architecture questions** → [docs/02-architecture-design.md](mdc:docs/02-architecture-design.md)

@@ -1,7 +1,64 @@
+/* Self-hosted fonts */
+@font-face {
+  font-family: 'Pacifico';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/pacifico-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/vollkorn-regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/noto-sans-regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/assets/fonts/noto-sans-600.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/noto-sans-700.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('/assets/fonts/noto-sans-900.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/inter-700.woff') format('woff');
+}
+
 body {
     background-color: #482124;
     color: #E3D6B8;
-    font-family: 'Instrument Sans', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .emailoctopus-form-wrapper[style*="padding"], .emailoctopus-form-default[style*="padding"] {
@@ -13,6 +70,11 @@ body {
 [data-form="6625d4d6-7f0c-11f0-9af9-bd5ee8066298"] .emailoctopus-form-wrapper[style*="padding"], [data-form="6625d4d6-7f0c-11f0-9af9-bd5ee8066298"] .emailoctopus-form-default[style*="padding"] {
     padding-top: 0em !important;
     padding: 0 !important;
+}
+
+/* EmailOctopus success message styling */
+p.emailoctopus-success-message {
+    font-style: italic !important;
 }
 
 .guest-card img {
@@ -179,7 +241,7 @@ body {
 }
 
 header h2 {
-    font-family: 'Hahmlet', serif;
+    font-family: 'Vollkorn', serif;
     font-size: 3em;
 }
 
@@ -641,7 +703,7 @@ body > .card-container.flipped-reverse .card-flipper {
     color: #482124;
 }
 
-.awesome-btn {
+.card-back .awesome-btn {
     background: #2C804F;
     color: white;
     border: none;
@@ -649,7 +711,7 @@ body > .card-container.flipped-reverse .card-flipper {
     padding: 1rem 2rem;
     font-family: 'Pacifico', cursive;
     font-size: 1.75rem;
-    font-weight: normal;
+    font-weight: normal !important;
     cursor: pointer;
     transition: background-color 0.2s;
     width: 80%;
@@ -681,7 +743,8 @@ body > .card-container.flipped-reverse .card-flipper {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .card-back .close-btn:hover {
@@ -711,13 +774,28 @@ body > .card-container.flipped-reverse .card-flipper {
     color: #482124 !important;
 }
 
-.performer-card p {
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-bottom: 1em;
-    text-align: center;
-    width: 100% !important;
-    min-width: 100%;
+.performer-card .text-content {
+    padding: 0 1rem 0.75rem 1rem !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.performer-card .text-content h3 {
+    text-align: left;
+    width: 100%;
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0 !important;
+    font-weight: bold;
+}
+
+.performer-card .text-content p {
+    text-align: left;
+    width: 100%;
+    margin: 0 0 0.5rem 0 !important;
+    padding: 0 !important;
+    word-break: keep-all;
+    overflow-wrap: break-word;
 }
 
 /* Performer image styling */
@@ -1055,7 +1133,7 @@ article {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-family: 'Instrument Sans', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     color: white;
     text-align: center;
     font-size: 3.3rem;
@@ -1086,4 +1164,331 @@ article {
     }
 }
 
+/* Panel Schedule Feature Styles */
+
+/* Show Panels Button */
+.show-panels-btn {
+    background-color: #482124;
+    color: #E3D6B8;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.show-panels-btn:hover {
+    opacity: 0.8;
+}
+
+/* Host card text content layout - more specific selectors to override old rules */
+#moderator-grid .guest-card .text-content {
+    padding: 0 1rem 0.75rem 1rem !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#moderator-grid .guest-card .text-content h3 {
+    text-align: left;
+    width: 100%;
+    font-size: 1.5rem; /* 25% increase from 1.2rem */
+    margin: 0 0 0.5rem 0 !important;
+}
+
+#moderator-grid .guest-card .text-content p {
+    text-align: left;
+    width: 100%;
+    margin: 0 0 0.5rem 0 !important;
+    padding: 0 !important; /* Override old padding rules */
+}
+
+#moderator-grid .guest-card .text-content .show-panels-btn {
+    align-self: flex-end;
+    margin-top: 0.5rem;
+}
+
+/* Panel Section */
+.panel-section {
+    background-color: #E3D6B8;
+    border-radius: 1em;
+    padding: 2rem;
+    margin: 2rem auto;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.3s ease-out;
+    max-width: 4xl;
+    width: 100%;
+    transform-origin: bottom;
+}
+
+.panel-section.closing {
+    animation: slideUp 0.3s ease-in forwards;
+}
+
+/* Container for panel section - full width like other sections */
+.panel-section-container {
+    width: 100%;
+    padding: 0 1.5rem;
+    margin: 0 auto;
+    max-width: 56rem; /* max-w-4xl */
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scaleY(0);
+    }
+}
+
+/* Reuse existing close button styles */
+.panel-section .close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: #482124;
+    color: #E3D6B8;
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    font-weight: bold;
+    z-index: 30;
+}
+
+.panel-section .close-btn:hover {
+    opacity: 0.8;
+}
+
+.panel-section-title {
+    color: #482124 !important;
+    font-family: 'Vollkorn', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.panel-day-section {
+    margin-bottom: 4rem;
+}
+
+.panel-header-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.panel-day-section:last-child {
+    margin-bottom: 0;
+}
+
+.panel-name {
+    color: #E3D6B8 !important;
+    background-color: #482124;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    padding: 0.7rem 1rem;
+    border-radius: 0.5rem;
+    display: block;
+}
+
+/* Responsive panel name sizing for mobile */
+@media (max-width: 425px) {
+    .panel-name {
+        font-size: 2.2rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .panel-name {
+        font-size: 1.9rem;
+        padding: 0.3rem 0.6rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .panel-name {
+        font-size: 1.6rem;
+        padding: 0.3rem 0.5rem;
+    }
+}
+
+
+.panel-day-heading {
+    color: #EBEBEB !important;
+    background-color: #4A7C59;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+    margin-left: 1em;
+    text-align: left;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    display: inline-block;
+    position: relative;
+    top: -1.1rem;
+    z-index: 1;
+    width: fit-content;
+}
+
+/* Mini Panelists Grid */
+.mini-panelists-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 0;
+}
+
+@media (min-width: 768px) {
+    .mini-panelists-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Mini Panelist Cards */
+.mini-panelist-card {
+    background-color: #482124;
+    border-radius: 0.75rem;
+    padding: 0;
+    text-align: center;
+    transition: transform 0.2s ease;
+    overflow: hidden;
+}
+
+.mini-panelist-card:hover {
+    transform: translateY(-2px);
+}
+
+.mini-card-image {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 0;
+}
+
+.mini-card-placeholder {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background-color: #5a2829;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #E3D6B8;
+    font-size: 0.875rem;
+}
+
+.mini-card-name {
+    color: #E3D6B8 !important;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 1rem 0.5rem;
+    line-height: 1.2;
+    background-color: #482124;
+}
+
+/* Panel Expanded State */
+body.panel-expanded {
+    overflow-y: auto;
+}
+
+/* Blur all sections except moderators and panel section */
+body.panel-expanded > main > section:not(#moderators) {
+    filter: blur(4px);
+    transition: filter 0.3s ease;
+    pointer-events: none;
+}
+
+body.panel-expanded::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Keep moderators section and panel section visible and interactive */
+#moderators,
+.panel-section-container {
+    position: relative;
+    z-index: 20;
+}
+
+/* Hide other moderator cards when panel is expanded */
+body.panel-expanded #moderator-grid .card-container {
+    visibility: hidden;
+}
+
+body.panel-expanded #moderator-grid .card-container.active-host {
+    visibility: visible;
+}
+
+/* Responsive day/time badge overlap and sizing for different viewport sizes */
+@media (max-width: 768px) {
+    .panel-day-heading {
+        top: -1rem;
+        margin-left: 0.75em;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 425px) {
+    .panel-day-heading {
+        top: -0.8rem;
+        margin-left: 0.5em;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .panel-day-heading {
+        top: -0.7rem;
+        margin-left: 0.4em;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .panel-day-heading {
+        top: -0.7rem;
+        margin-left: 0.25em;
+        font-size: 0.8rem;
+    }
+}
 

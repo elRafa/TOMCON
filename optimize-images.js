@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
-const inputDir = './images';
-const outputDir = './images';
+const inputDir = './assets/images';
+const outputDir = './assets/images';
 const quality = 80; // WebP quality
 const maxWidth = 1200; // Maximum width for large images
 const maxHeight = 1200; // Maximum height for large images

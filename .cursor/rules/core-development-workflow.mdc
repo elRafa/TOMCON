@@ -1,0 +1,40 @@
+---
+description: Core development workflow, testing, debugging, and building processes
+globs: *.js,*.html,*.css,package.json,vite.config.js
+---
+
+# Core Development Workflow
+
+## Before Any Changes
+- **Verify working directory**: Always ensure terminal is in project root before running commands
+- **Test locally first**: `npm run dev` at http://localhost:8000
+- **Build verification**: `npm run build` then check dist/ contents
+- **Never deploy without testing**: See [docs/05-build-deployment.md](mdc:docs/05-build-deployment.md)
+
+## Debugging Process
+- **Use parallel tool calls** for maximum efficiency when gathering information
+- **Check multiple file types** (HTML, CSS, JS) when investigating styling issues
+- **Verify built output** in dist/ folder, not just source files
+- **For systematic approach**: See [docs/09-troubleshooting.md](mdc:docs/09-troubleshooting.md)
+
+## Build System
+- **Vite script placement**: ALWAYS in `<head>` section for multi-page builds
+- **Verify build output**: Check that script tags are included in built HTML
+- **For complete build process**: See [docs/05-build-deployment.md](mdc:docs/05-build-deployment.md)
+
+## Deployment Protocol
+- **Wait for explicit user request** before deploying
+- **Follow deployment workflow**: See [docs/05-build-deployment.md](mdc:docs/05-build-deployment.md)
+- **Verify post-deployment**: Test all interactive elements
+
+## Problem-Solving Priorities
+1. **Identify the real problem** (not just symptoms)
+2. **Find the most efficient solution** (avoid wasteful workarounds)
+3. **Ensure the fix is sustainable** (don't create technical debt)
+4. **Test thoroughly** before marking as complete
+
+## Communication
+- **Explain the root cause** when presenting solutions
+- **Show efficiency gains** when optimizing
+- **Acknowledge when previous approaches were suboptimal**
+- **Focus on architectural improvements** over quick fixes

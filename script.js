@@ -1,4 +1,5 @@
 import { guests } from './guests.js';
+import { schedule } from './schedule.js';
 import { createIcons, Facebook, Instagram, Youtube } from 'lucide';
 
 // DEBUG MODE: Set to true to disable lazy loading and see placeholders
@@ -18,9 +19,231 @@ let isKeyboardNavigationEnabled = false;
 let isProjectOverlayActive = false;
 let projectOverlays = new Map(); // Store overlay elements per card
 
+// Panel schedule feature variables
+let currentExpandedHost = null;
+let panelSection = null;
+let currentHostCard = null;
+
 // Function to check if any card is currently flipped
 function isAnyCardFlipped() {
     return document.querySelector('.card-flipper.flipped') !== null;
+}
+
+// Function to check if a host has panels
+function hostHasPanels(hostName) {
+    return schedule.some(day => 
+        day.panels.some(panel => panel.hostName === hostName)
+    );
+}
+
+// Function to get panels for a specific host
+function getHostPanels(hostName) {
+    const hostPanels = [];
+    schedule.forEach(day => {
+        day.panels.forEach(panel => {
+            if (panel.hostName === hostName) {
+                hostPanels.push({
+                    ...panel,
+                    day: day.day,
+                    date: day.date
+                });
+            }
+        });
+    });
+    return hostPanels;
+}
+
+// Function to create mini panelist card
+function createMiniPanelistCard(panelistName) {
+    const guest = guests.find(g => g.name === panelistName);
+    if (!guest) return '';
+
+    const imageHtml = guest.imageUrl ? 
+        `<img src="${guest.imageUrl}" alt="${guest.name}" class="mini-card-image">` :
+        `<div class="mini-card-placeholder">No Image</div>`;
+
+    return `
+        <div class="mini-panelist-card">
+            ${imageHtml}
+            <h4 class="mini-card-name">${guest.name}</h4>
+        </div>
+    `;
+}
+
+// Function to format time for display (extract start time and convert to uppercase)
+function formatTimeForDisplay(timeString) {
+    // Extract start time from range (e.g., "06:30-07:45pm" -> "6:30PM")
+    const startTime = timeString.split('-')[0];
+    
+    // Remove leading zero from hour if present
+    let formattedTime = startTime.replace(/^0/, '');
+    
+    // Convert to uppercase (this will handle AM/PM that's already in the time)
+    return formattedTime.toUpperCase();
+}
+
+// Function to create panel section
+function createPanelSection(hostName) {
+    const hostPanels = getHostPanels(hostName);
+    if (hostPanels.length === 0) return '';
+
+    let sectionHtml = `
+        <div class="panel-section">
+            <button class="close-btn" aria-label="Close">&times;</button>
+            <h3 class="panel-section-title">Panels hosted by ${hostName}</h3>
+    `;
+
+    hostPanels.forEach(panel => {
+        const formattedTime = formatTimeForDisplay(panel.time);
+        // Handle special case for "90s" to preserve lowercase "s"
+        const panelNameDisplay = panel.panelName === "90s Heavy Music" 
+            ? "90s HEAVY MUSIC" 
+            : panel.panelName.toUpperCase();
+        sectionHtml += `
+            <div class="panel-day-section">
+                <div class="panel-header-wrapper">
+                    <h4 class="panel-name">${panelNameDisplay}</h4>
+                    <h5 class="panel-day-heading">${panel.day.toUpperCase()} • ${formattedTime}</h5>
+                </div>
+                <div class="mini-panelists-grid">
+                    ${panel.panelists.map(panelist => createMiniPanelistCard(panelist)).join('')}
+                </div>
+            </div>
+        `;
+    });
+
+    sectionHtml += '</div>';
+    return sectionHtml;
+}
+
+// Function to show panel section
+function showPanelSection(hostName) {
+    // Close any existing panel section
+    if (currentExpandedHost) {
+        closePanelSection();
+    }
+
+    const hostCard = document.querySelector(`.show-panels-btn[data-host-name="${hostName}"]`)?.closest('.card-container');
+    if (!hostCard) return;
+
+    // Store reference for closing
+    currentHostCard = hostCard;
+
+    // Mark this card as the active host
+    hostCard.classList.add('active-host');
+
+    // Create and insert panel section after the moderators section
+    const moderatorsSection = document.getElementById('moderators');
+    if (!moderatorsSection) return;
+
+    const panelSectionHtml = createPanelSection(hostName);
+    const containerDiv = document.createElement('div');
+    containerDiv.className = 'panel-section-container';
+    containerDiv.innerHTML = panelSectionHtml;
+    panelSection = containerDiv;
+
+    // Insert after the moderators section
+    moderatorsSection.parentNode.insertBefore(panelSection, moderatorsSection.nextSibling);
+
+    // Apply blur and scroll management
+    document.body.classList.add('panel-expanded');
+    currentExpandedHost = hostName;
+
+    // Scroll to show the panel section
+    setTimeout(() => {
+        const panelSectionRect = panelSection.getBoundingClientRect();
+        const scrollTop = window.scrollY + panelSectionRect.top - 100; // Scroll to panel section
+        window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+        
+        // Set up scroll boundaries
+        setupScrollBoundaries(hostCard, panelSection);
+    }, 100);
+
+    // Update button text
+    const showPanelsBtn = hostCard.querySelector('.show-panels-btn');
+    if (showPanelsBtn) {
+        showPanelsBtn.textContent = `Hide ${hostName.split(' ')[0]}'s Panel Schedule`;
+    }
+}
+
+// Function to set up scroll boundaries
+function setupScrollBoundaries(hostCard, panelSection) {
+    const scrollHandler = (e) => {
+        const panelSectionTop = panelSection.getBoundingClientRect().top + window.scrollY;
+        const panelSectionBottom = panelSection.getBoundingClientRect().bottom + window.scrollY;
+        const currentScroll = window.scrollY;
+        
+        // Account for countdown header height (approximately 3rem)
+        const countdownHeight = 48; // 3rem in pixels
+        
+        // Prevent scrolling above panel section (with countdown offset)
+        if (currentScroll < panelSectionTop - countdownHeight) {
+            window.scrollTo({ top: panelSectionTop - countdownHeight, behavior: 'auto' });
+        }
+        
+        // Prevent scrolling below panel section
+        if (currentScroll + window.innerHeight > panelSectionBottom + 20) {
+            window.scrollTo({ top: panelSectionBottom - window.innerHeight + 20, behavior: 'auto' });
+        }
+    };
+    
+    window.addEventListener('scroll', scrollHandler);
+    
+    // Store handler for cleanup
+    panelSection._scrollHandler = scrollHandler;
+}
+
+// Function to close panel section
+function closePanelSection() {
+    if (!panelSection || !currentExpandedHost) return;
+
+    // Get the actual panel section element (not the container)
+    const actualPanelSection = panelSection.querySelector('.panel-section');
+    if (actualPanelSection) {
+        // Add closing animation class
+        actualPanelSection.classList.add('closing');
+        
+        // Scroll to host card during animation
+        const hostCard = currentHostCard;
+        if (hostCard) {
+            const hostCardRect = hostCard.getBoundingClientRect();
+            const scrollTop = window.scrollY + hostCardRect.top - 20;
+            window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+        }
+        
+        // Remove everything after animation completes
+        setTimeout(() => {
+            // Remove scroll handler
+            if (panelSection._scrollHandler) {
+                window.removeEventListener('scroll', panelSection._scrollHandler);
+            }
+
+            // Remove panel section
+            panelSection.remove();
+            panelSection = null;
+
+            // Remove blur and restore interactions
+            document.body.classList.remove('panel-expanded');
+            
+            // Update button text and remove active-host class
+            if (hostCard) {
+                hostCard.classList.remove('active-host');
+                const showPanelsBtn = hostCard.querySelector('.show-panels-btn');
+                if (showPanelsBtn) {
+                    showPanelsBtn.textContent = `Show ${currentExpandedHost.split(' ')[0]}'s Panel Schedule`;
+                }
+            }
+            
+            currentExpandedHost = null;
+            currentHostCard = null; // Clear the reference
+        }, 300); // Match animation duration
+    } else {
+        // Fallback if structure is unexpected
+        panelSection.remove();
+        panelSection = null;
+        document.body.classList.remove('panel-expanded');
+        currentExpandedHost = null;
+    }
 }
 
 // Function to show/hide project name overlays
@@ -249,6 +472,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear the grid first to prevent duplicates
         grid.innerHTML = '';
         
+        // Check if this is the moderator grid
+        const isModeratorGrid = grid.id === 'moderator-grid';
+        
         // Use DocumentFragment for better performance
         const fragment = document.createDocumentFragment();
         
@@ -292,10 +518,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const guestQuestions = getGuestQuestions(guest.name);
             const questionCount = guestQuestions.length;
             const displayName = guest.name.split(' ')[0];
+            const pronoun = guest.gender === 'female' ? 'her' : guest.gender === 'male' ? 'him' : 'them';
             const hoverText = questionCount >= 2 ? 
                 `Edit or delete your questions for ${displayName}` : 
-                `Ask ${displayName} a question to be considered during the Audience Q&A`;
+                `Tap ${displayName}'s photo to ask ${pronoun} a question to be considered during the Audience Q&A`;
             
+            // Check if this is a moderator with panels (only in moderator grid)
+            const hasPanels = isModeratorGrid && hostHasPanels(guest.name);
+            const showPanelsButton = hasPanels ? 
+                `<button class="show-panels-btn" data-host-name="${guest.name}">Show ${guest.name.split(' ')[0]}'s Panel Schedule</button>` : '';
+
             cardFront.innerHTML = `
                 <div class="image-section">
                     ${imageHtml}
@@ -305,6 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="text-content">
                     <h3 class="text-xl font-bold">${guest.name}</h3>
                     <p class="text-sm text-gray-400 italic mt-1">${guest.projects}</p>
+                    ${showPanelsButton}
                 </div>
             `;
             
@@ -355,16 +588,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Define day order and display names
         const dayOrder = ['Friday', 'Saturday'];
         const dayDisplayNames = {
-            'Friday': 'FRIDAY OCT 24',
-            'Saturday': 'SATURDAY OCT 25'
+            'Friday': 'FRIDAY • 9:30PM',
+            'Saturday': 'SATURDAY • 9:30PM'
         };
         
         // Render each day's section
         dayOrder.forEach(day => {
             if (performersByDay[day] && performersByDay[day].length > 0) {
-                // Create day heading
+                // Create day heading with panel-name styling
                 const dayHeading = document.createElement('h3');
-                dayHeading.className = 'text-2xl font-bold text-center mb-6 mt-8 first:mt-0';
+                dayHeading.className = 'panel-name text-center mb-6 mt-8 first:mt-0';
                 dayHeading.textContent = dayDisplayNames[day];
                 grid.appendChild(dayHeading);
                 
@@ -730,8 +963,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="char-count">${(draft?.question || '').length}</span>/140
                         </div>
                     </div>
-                    <input type="text" name="submitter" placeholder="Your name (optional)" value="${draft?.submitter || ''}" />
-                    <input type="email" name="email" placeholder="Your email (optional)" value="${draft?.email || ''}" />
+                    <input type="text" name="submitter" placeholder="Your name (optional)" value="${draft?.submitter || ''}" autocomplete="name" />
+                    <input type="email" name="email" placeholder="Your email (optional)" value="${draft?.email || ''}" autocomplete="email" />
                     <p class="email-description">Adding your email above will allow ${displayName} to respond to you in case your question doesn't get addressed during the event.</p>
                     <div class="form-buttons">
                         <button type="submit" class="submit-btn">Submit Question</button>
@@ -749,8 +982,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="char-count">${(draft?.question || '').length}</span>/140
                         </div>
                     </div>
-                    <input type="text" name="submitter" placeholder="Your name (optional)" value="${draft?.submitter || ''}" />
-                    <input type="email" name="email" placeholder="Your email (optional)" value="${draft?.email || ''}" />
+                    <input type="text" name="submitter" placeholder="Your name (optional)" value="${draft?.submitter || ''}" autocomplete="name" />
+                    <input type="email" name="email" placeholder="Your email (optional)" value="${draft?.email || ''}" autocomplete="email" />
                     <p class="email-description">Adding your email above will allow ${displayName} to respond to you in case your question doesn't get addressed during the event.</p>
                     <div class="form-buttons">
                         <button type="submit" class="submit-btn">Submit Question</button>
@@ -903,6 +1136,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Use event delegation for card clicks and form handling
         document.addEventListener('click', function(e) {
+            // Handle panel section buttons
+            if (e.target.matches('.show-panels-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                const hostName = e.target.getAttribute('data-host-name');
+                if (currentExpandedHost === hostName) {
+                    closePanelSection();
+                } else {
+                    showPanelSection(hostName);
+                }
+                return;
+            }
+
+            // Handle panel section close button
+            if (e.target.matches('.panel-section .close-btn')) {
+                e.preventDefault();
+                e.stopPropagation();
+                closePanelSection();
+                return;
+            }
+
+            // If there's a panel section expanded, handle clicks outside
+            if (currentExpandedHost) {
+                // Allow clicks within the panel section
+                if (e.target.closest('.panel-section')) {
+                    return;
+                }
+                // Allow clicks on the host card that has the expanded section
+                const hostCard = currentHostCard;
+                if (hostCard && hostCard.contains(e.target)) {
+                    return;
+                }
+                // Close panel section if clicking outside
+                closePanelSection();
+                return;
+            }
+
             // If there's a flipped card, check if click is outside it
             if (currentFlippedCard) {
                 // Check if click is on the flipped card itself or its contents

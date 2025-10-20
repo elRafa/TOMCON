@@ -46,7 +46,7 @@ export default defineConfig({
   server: {
     port: 8000
   },
-  publicDir: 'images',
+  publicDir: false,
   // Optimize dependencies
   optimizeDeps: {
     include: ['lucide']

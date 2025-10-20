@@ -1,0 +1,29 @@
+---
+description: Deployment workflow and git management best practices
+globs: deploy.sh,package.json,.gitignore
+---
+
+# Deployment and Git Workflow
+
+## Build Process
+- **Always build before deploy**: `npm run build` then `./deploy.sh`
+- **Verify dist/ contents** match expectations
+- **For complete workflow**: See [docs/05-build-deployment.md](mdc:docs/05-build-deployment.md)
+
+## Git Management
+- **Descriptive commit messages** explaining problem and solution
+- **Pull before pushing** to avoid conflicts
+- **Check git status** before making assumptions about uncommitted changes
+
+## File Management
+- **Update .gitignore** to exclude system files (`.DS_Store`, `node_modules/`)
+- **Include deployment files** ([deploy.sh](mdc:deploy.sh), [DEPLOYMENT.md](mdc:DEPLOYMENT.md)) in repository
+- **Exclude build outputs** (`dist/`) from version control
+- **Track package-lock.json** for dependency consistency
+
+## Production Verification
+- **Test on live site** after deployment to verify all assets load correctly
+- **Check both main and legal pages** for consistent functionality
+- **Verify WebP images** and other optimized assets are accessible
+
+## For detailed deployment**: See [docs/05-build-deployment.md](mdc:docs/05-build-deployment.md)

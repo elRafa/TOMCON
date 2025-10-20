@@ -1,0 +1,68 @@
+---
+description: General development guidelines and best practices that always apply
+alwaysApply: true
+---
+
+# General Development Guidelines
+
+## Core Principles
+- **Test locally first**: Always use `npm run dev` at http://localhost:8000 before making changes
+- **Build before testing new images**: For new guests with images, run `npm run build` first to generate WebP files, then test with `npm run dev`
+- **Don't assume anything**: Verify current state with tools and actual file contents
+- **Find root causes**: Don't just patch symptoms, understand the underlying issue
+- **Use parallel tool calls**: Gather information efficiently with multiple simultaneous searches
+
+## Documentation Strategy
+- **Reference docs when needed**: Use [docs/](mdc:docs/) folder for comprehensive information
+- **Don't duplicate content**: Rules should reference docs, not repeat them
+- **For detailed guidance**: Check specific doc sections when rules reference them
+
+## Problem-Solving Approach
+1. **Identify the real problem** (not just symptoms)
+2. **Gather complete information** before making changes
+3. **Find the most efficient solution** (avoid wasteful workarounds)
+4. **Test thoroughly** before marking as complete
+5. **Explain the root cause** when presenting solutions
+
+## Communication
+- **Show efficiency gains** when optimizing
+- **Acknowledge when previous approaches were suboptimal**
+- **Focus on architectural improvements** over quick fixes
+- **Ask before deploying** unless explicitly told to proceed
+
+## Project Context
+- **TOMCON 2025 Website**: Multi-page static site with guest management
+- **Tech Stack**: Vite + Tailwind + Vanilla JS + Lucide icons
+- **Key Files**: `index.html`, `script.js`, `guests.js`, `style.css`
+- **Build System**: WebP image optimization, multi-page Vite build
+
+## Image Management
+- **JPG files are source**: Add original JPG/PNG to `images/` directory
+- **WebP generated at build**: `npm run build` automatically converts to WebP
+- **Guest data references WebP**: Use `.webp` extensions in `guests.js`
+- **No manual WebP creation needed**: Build process handles optimization
+
+## Key Project Files
+- **`guests.js`**: Guest data with visibility, roles, and image references
+- **`script.js`**: Main application logic and icon initialization
+- **`index.html`**: Main page with guest cards and countdown
+- **`docs/`**: Comprehensive project documentation
+- **`images/`**: Source JPG files and generated WebP files
+
+## Common Tasks
+- **Adding guests**: Update `guests.js` with JPG filename, build generates WebP
+- **Alphabetical ordering**: Place new guests in correct alphabetical position within their role section
+- **Testing changes**: `npm run dev` → `npm run build` → verify `dist/`
+- **Styling issues**: Check HTML structure, CSS classes, and built output
+- **Performance**: Images auto-optimized, bundle size monitored
+
+## Troubleshooting
+- **Memory issues**: If Vite crashes with "heap out of memory", use `NODE_OPTIONS="--max-old-space-size=4096" npx vite --port 8000`
+- **Path issues**: Ensure terminal is in correct directory before running commands
+- **Port conflicts**: If port 8000 is busy, Vite will automatically try 8001, 8002, etc.
+
+## When to Check Specific Rules
+- **CSS/Styling issues** → `css-styling-debugging.mdc`
+- **Icon problems** → `lucide-icon-integration.mdc`
+- **Build/Deploy issues** → `deployment-git-workflow.mdc`
+- **Development workflow** → `core-development-workflow.mdc`
